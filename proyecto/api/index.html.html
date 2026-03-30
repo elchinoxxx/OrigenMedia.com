@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Origen Media | Hybrid Agency</title>
+    
+    <!-- Optimizaciones de velocidad -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        origen: {
+                            navy: '#0A0F1C',
+                            gold: '#C5A063',
+                            light: '#F8FAFC',
+                            accent: '#2563EB',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    boxShadow: {
+                        'bento': '0 10px 30px -10px rgba(0, 0, 0, 0.05)',
+                        'bento-hover': '0 20px 40px -10px rgba(197, 160, 99, 0.15)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #0A0F1C;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            user-select: none;
+        }
+        
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+            will-change: background, backdrop-filter, box-shadow;
+        }
+
+        .card-clean {
+            background: #ffffff;
+            border-radius: 2rem;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: var(--tw-shadow-bento);
+        }
+        .card-clean:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--tw-shadow-bento-hover);
+            border-color: rgba(197, 160, 99, 0.4);
+        }
+        
+        .serif-title { font-family: 'Playfair Display', serif; }
+
+        @keyframes pulseGlow {
+            0%, 100% { filter: drop-shadow(0 0 15px rgba(197,160,99,0.3)); }
+            50% { filter: drop-shadow(0 0 35px rgba(197,160,99,0.7)); }
+        }
+        .pulse-glow { animation: pulseGlow 4s ease-in-out infinite; }
+
+        .anim-state-1 { animation: brutalCut1 4s infinite; }
+        .anim-state-2 { animation: brutalCut2 4s infinite; }
+        .anim-red-block { animation: brutalRedBlock 4s cubic-bezier(0.85, 0, 0.15, 1) infinite; transform-origin: left; }
+        .sync-glitch { animation: syncGlitch 4s infinite; }
+        
+        @keyframes brutalCut1 { 0%, 45% { opacity: 1; pointer-events: auto; } 45.1%, 100% { opacity: 0; pointer-events: none; } }
+        @keyframes brutalCut2 { 0%, 45% { opacity: 0; pointer-events: none; } 45.1%, 95% { opacity: 1; pointer-events: auto; } 95.1%, 100% { opacity: 0; pointer-events: none; } }
+        @keyframes brutalRedBlock { 0%, 45% { transform: scaleX(0) translateY(-50%); opacity: 0; } 46% { opacity: 1; transform: scaleX(0) translateY(-50%); } 52%, 90% { transform: scaleX(1) translateY(-50%); opacity: 1; } 91%, 100% { transform: scaleX(0) translateY(-50%); opacity: 0; } }
+        @keyframes syncGlitch { 0%, 44% { transform: translate(0); text-shadow: none; color: white; } 45% { transform: translate(-3px, 1px); text-shadow: 2px 0 #ef4444, -2px 0 #38BDF8; color: #ef4444; } 46% { transform: translate(3px, -1px); text-shadow: -2px 0 #ef4444, 2px 0 #38BDF8; color: white; } 47%, 100% { transform: translate(0); text-shadow: none; color: white; } }
+
+        .ai-loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid rgba(197,160,99,0.3);
+            border-bottom-color: #C5A063;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Estilos Burbujas Poéticas */
+        .bubble-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .poetic-bubble {
+            position: absolute;
+            background: rgba(197, 160, 99, 0.05);
+            border: 1px solid rgba(197, 160, 99, 0.2);
+            color: #C5A063;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            backdrop-filter: blur(4px);
+            pointer-events: auto;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            animation: floatBubble 6s ease-in-out infinite alternate;
+        }
+        .poetic-bubble:hover {
+            background: rgba(197, 160, 99, 0.15);
+            transform: scale(1.05);
+        }
+        .bubble-pop {
+            animation: popBubble 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        @keyframes floatBubble {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-15px) translateX(10px); }
+            100% { transform: translateY(5px) translateX(-5px); }
+        }
+        @keyframes popBubble {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.8; filter: brightness(1.5); }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #C5A063; border-radius: 10px; }
+
+        .lang-btn { transition: all 0.3s ease; }
+        .lang-active { background: #182236; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .lang-inactive { background: transparent; color: #9CA3AF; }
+        .lang-inactive:hover { color: #182236; }
+
+        .modal-open { overflow: hidden !important; }
+    </style>
+</head>
+<body class="font-sans antialiased" oncontextmenu="return false;">
+
+    <!-- NAV -->
+    <nav class="fixed w-full z-50 nav-glass" id="mainNav">
+        <div class="container mx-auto px-6 py-4 flex justify-end lg:justify-center items-center">
+            
+            <div class="hidden lg:flex items-center gap-8 text-[11px] uppercase tracking-widest font-bold text-gray-500">
+                
+                <div class="group relative py-4">
+                    <button class="hover:text-origen-navy transition-colors flex items-center gap-1.5 focus:outline-none">
+                        <span data-i18n="nav_agency_menu">La Agencia</span> <i class="fa-solid fa-chevron-down text-[8px] mt-0.5 opacity-50 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-300"></i>
+                    </button>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-56 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] opacity-0 translate-y-3 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 overflow-hidden">
+                        <div class="py-3 flex flex-col">
+                            <button onclick="openPhilosophyModal()" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-origen-gold transition-colors flex items-center gap-3 w-full text-left" data-i18n="nav_philosophy">Filosofía</button>
+                            <button onclick="openTeamOverlay()" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-origen-gold transition-colors flex items-center gap-3 w-full text-left" data-i18n="nav_leadership">Liderazgo</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative py-4">
+                    <button class="hover:text-origen-navy transition-colors flex items-center gap-1.5 focus:outline-none">
+                        <span data-i18n="nav_verticals">Verticales</span> <i class="fa-solid fa-chevron-down text-[8px] mt-0.5 opacity-50 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-300"></i>
+                    </button>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-60 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] opacity-0 translate-y-3 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 overflow-hidden">
+                        <div class="py-3 flex flex-col text-[10px]">
+                            <button onclick="openModal('pr')" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-purple-500 transition-colors flex items-center gap-3 w-full text-left"><i class="fa-solid fa-comments text-purple-500 w-4"></i> <span data-i18n="nav_pr">Relaciones Públicas</span></button>
+                            <button onclick="openModal('marketing_publicidad')" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-blue-500 transition-colors flex items-center gap-3 w-full text-left"><i class="fa-solid fa-bullhorn text-blue-500 w-4"></i> <span data-i18n="nav_pub_mkt">Marketing & Publicidad</span></button>
+                            <button onclick="openModal('produccion')" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-origen-gold transition-colors flex items-center gap-3 w-full text-left"><i class="fa-solid fa-clapperboard text-origen-gold w-4"></i> <span data-i18n="nav_prod">Producción</span></button>
+                            <button onclick="openModal('management')" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-green-500 transition-colors flex items-center gap-3 w-full text-left"><i class="fa-solid fa-briefcase text-green-500 w-4"></i> <span data-i18n="nav_mgmt">Management</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#socios" class="hover:text-origen-navy transition-colors py-4" data-i18n="nav_partners">Socios</a>
+                <button onclick="openTreeOverlay()" class="hover:text-origen-navy transition-colors py-4 uppercase font-bold" data-i18n="nav_investment">Inversión</button>
+                <button onclick="openTeamOverlay()" class="px-6 py-2.5 rounded-full border border-origen-gold text-origen-gold hover:bg-origen-gold hover:text-white transition-all duration-300 shadow-sm" data-i18n="nav_org">Estructura Operativa</button>
+                
+                <div class="flex items-center bg-gray-100/80 p-1 rounded-full border border-gray-200 backdrop-blur-md ml-2">
+                    <button onclick="setLang('es')" id="btn-es" class="lang-btn lang-active px-3 py-1.5 rounded-full text-[10px] font-bold tracking-widest">ES</button>
+                    <button onclick="setLang('en')" id="btn-en" class="lang-btn lang-inactive px-3 py-1.5 rounded-full text-[10px] font-bold tracking-widest">EN</button>
+                </div>
+            </div>
+
+            <button id="mobile-menu-btn" class="lg:hidden text-origen-navy text-2xl focus:outline-none relative z-[70]">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="fixed inset-0 bg-white/98 backdrop-blur-3xl z-[65] hidden flex-col justify-center items-center opacity-0 transition-opacity duration-300">
+            <div class="flex flex-col items-center text-sm uppercase tracking-[0.2em] font-bold text-gray-500 space-y-8">
+                <button onclick="openPhilosophyModal(); closeMobileMenu();" class="hover:text-origen-gold transition-colors uppercase" data-i18n="nav_philosophy">Filosofía</button>
+                <button onclick="openTeamOverlay(); closeMobileMenu();" class="hover:text-origen-gold transition-colors uppercase" data-i18n="nav_leadership">Liderazgo</button>
+                <span class="hover:text-origen-gold transition-colors cursor-pointer opacity-50 pointer-events-none" data-i18n="nav_verticals">Verticales</span>
+                <a href="#socios" class="mobile-link hover:text-origen-gold transition-colors" data-i18n="nav_partners">Socios</a>
+                <button onclick="openTreeOverlay(); closeMobileMenu();" class="hover:text-origen-gold transition-colors uppercase" data-i18n="nav_investment">Inversión</button>
+                <button onclick="openTeamOverlay(); closeMobileMenu();" class="text-origen-gold hover:text-origen-navy transition-colors" data-i18n="nav_org">Estructura Operativa</button>
+                
+                <div class="flex items-center gap-4 pt-6 border-t border-gray-200 w-full justify-center">
+                    <button onclick="setLang('es')" id="btn-es-mob" class="lang-btn lang-active px-6 py-2 rounded-full text-xs">ES</button>
+                    <button onclick="setLang('en')" id="btn-en-mob" class="lang-btn lang-inactive px-6 py-2 rounded-full text-xs">EN</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="min-h-screen flex items-center justify-center relative bg-white overflow-hidden pt-24 pb-16">
+        <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:40px_40px] opacity-50 z-0"></div>
+        <div class="absolute top-0 right-0 w-3/4 h-full bg-gradient-to-l from-origen-light to-transparent skew-x-12 transform translate-x-40 opacity-70 pointer-events-none z-0"></div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10 flex flex-col items-center justify-center" data-aos="zoom-out" data-aos-duration="1200">
+            
+            <div class="flex flex-col items-center justify-center mb-8 mt-8">
+                <div onclick="openTreeOverlay()" class="w-20 h-20 md:w-28 md:h-28 rounded-full border-[6px] md:border-[8px] border-origen-gold border-r-transparent rotate-45 transition-transform duration-[2000ms] hover:rotate-[225deg] mb-8 shadow-[0_0_50px_rgba(197,160,99,0.25)] cursor-pointer relative z-40" title="Ver Árbol de Escalamiento"></div>
+                
+                <h1 class="text-6xl md:text-[8rem] lg:text-[11rem] font-black tracking-[0.1em] text-origen-navy leading-[0.8] serif-title uppercase pl-4 md:pl-8" data-i18n="hero_title">
+                    ORIGEN<br>MEDIA
+                </h1>
+            </div>
+            
+            <h2 class="text-xl md:text-2xl lg:text-3xl font-serif text-origen-gold italic mb-12 pulse-glow" data-i18n="hero_subtitle">
+                Built from the origin.
+            </h2>
+
+            <div class="flex flex-wrap justify-center gap-3 md:gap-5 mb-12 max-w-4xl mx-auto relative z-30">
+                <button onclick="openModal('pr')" class="px-6 py-3 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full shadow-sm text-[10px] md:text-xs font-bold tracking-widest text-gray-600 uppercase flex items-center gap-3 hover:border-purple-500 hover:text-purple-600 transition-all duration-300">
+                    <i class="fa-solid fa-comments text-purple-500 text-sm md:text-base"></i> <span data-i18n="badge_pr">Relaciones Públicas</span>
+                </button>
+                <button onclick="openModal('marketing_publicidad')" class="px-6 py-3 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full shadow-sm text-[10px] md:text-xs font-bold tracking-widest text-gray-600 uppercase flex items-center gap-3 hover:border-blue-500 hover:text-blue-600 transition-all duration-300">
+                    <i class="fa-solid fa-bullhorn text-blue-500 text-sm md:text-base"></i> <span data-i18n="badge_mkt_pub">Marketing & Publicidad</span>
+                </button>
+                <button onclick="openModal('management')" class="px-6 py-3 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full shadow-sm text-[10px] md:text-xs font-bold tracking-widest text-gray-600 uppercase flex items-center gap-3 hover:border-green-500 hover:text-green-600 transition-all duration-300">
+                    <i class="fa-solid fa-briefcase text-green-500 text-sm md:text-base"></i> <span data-i18n="badge_mgmt">Management</span>
+                </button>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 relative z-10 w-full max-w-2xl mx-auto border-t border-gray-100 pt-10">
+                <button onclick="openContactForm('General')" class="w-full sm:w-auto px-8 py-4 bg-origen-navy text-white font-bold rounded-full hover:bg-origen-gold transition-colors duration-300 shadow-xl text-center" data-i18n="hero_cta1">
+                    Agendar reunión
+                </button>
+                <div class="w-full sm:w-auto flex flex-col items-center">
+                    <button onclick="openTeamOverlay()" class="w-full sm:w-auto px-8 py-4 bg-white border border-gray-200 text-origen-navy font-bold rounded-full hover:border-origen-navy transition-all duration-300 shadow-sm flex items-center justify-center gap-2">
+                        <span data-i18n="hero_cta2">Ver estructura Origen Media</span> <i class="fa-solid fa-sitemap text-origen-gold"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECCIÓN: CÓMO LO HACEMOS -->
+    <section id="como-lo-hacemos" class="py-24 bg-origen-light relative border-b border-gray-100 overflow-hidden">
+        <div class="container mx-auto px-6 max-w-7xl relative z-10">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-origen-gold font-bold uppercase tracking-widest text-xs mb-2 block" data-i18n="how_tag">Cómo lo hacemos</span>
+                <h2 class="text-4xl md:text-6xl font-black text-origen-navy tracking-tighter mb-4" data-i18n="how_title">Contenido + Estrategia + Relaciones</h2>
+                <p class="text-lg md:text-xl text-gray-500 font-serif italic max-w-2xl mx-auto" data-i18n="how_sub">Una marca se posiciona cuando tres fuerzas trabajan juntas.</p>
+            </div>
+
+            <!-- Los 3 Pilares (Interactivos) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-20">
+                <div onclick="openPillarModal('estrategia')" class="card-clean p-10 border border-gray-200 text-center flex flex-col items-center cursor-pointer group hover:border-origen-navy" data-aos="fade-up" data-aos-delay="0">
+                    <div class="w-16 h-16 bg-origen-navy rounded-full flex items-center justify-center text-white text-2xl mb-6 shadow-md group-hover:scale-110 transition-transform duration-300"><i class="fa-solid fa-chess-knight"></i></div>
+                    <h3 class="text-2xl font-bold text-origen-navy mb-4 serif-title" data-i18n="h_1_t">Estrategia</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6" data-i18n="h_1_d">Análisis del negocio para definir una dirección clara y objetivos medibles.</p>
+                    <span class="mt-auto text-[10px] text-origen-navy font-bold uppercase tracking-widest bg-gray-100 px-4 py-2 rounded-full group-hover:bg-origen-navy group-hover:text-white transition-colors" data-i18n="btn_explore">Explorar Pilar</span>
+                </div>
+                <div onclick="openPillarModal('contenido')" class="card-clean p-10 border border-gray-200 text-center flex flex-col items-center cursor-pointer group hover:border-origen-gold" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-origen-gold rounded-full flex items-center justify-center text-white text-2xl mb-6 shadow-md group-hover:scale-110 transition-transform duration-300"><i class="fa-solid fa-pen-nib"></i></div>
+                    <h3 class="text-2xl font-bold text-origen-navy mb-4 serif-title" data-i18n="h_2_t">Contenido</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6" data-i18n="h_2_d">Creamos historias, formatos visuales premium y narrativas estructuradas que conectan genuinamente.</p>
+                    <span class="mt-auto text-[10px] text-origen-gold font-bold uppercase tracking-widest bg-origen-gold/10 px-4 py-2 rounded-full group-hover:bg-origen-gold group-hover:text-white transition-colors" data-i18n="btn_explore">Explorar Pilar</span>
+                </div>
+                <div onclick="openPillarModal('relaciones')" class="card-clean p-10 border border-gray-200 text-center flex flex-col items-center cursor-pointer group hover:border-purple-500" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center text-white text-2xl mb-6 shadow-md group-hover:scale-110 transition-transform duration-300"><i class="fa-solid fa-comments"></i></div>
+                    <h3 class="text-2xl font-bold text-origen-navy mb-4 serif-title" data-i18n="h_3_t">Relaciones Públicas</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6" data-i18n="h_3_d">Convertimos la marca en conversación pública constante dentro de los medios y la industria.</p>
+                    <span class="mt-auto text-[10px] text-purple-600 font-bold uppercase tracking-widest bg-purple-50 px-4 py-2 rounded-full group-hover:bg-purple-500 group-hover:text-white transition-colors" data-i18n="btn_explore">Explorar Pilar</span>
+                </div>
+            </div>
+
+            <!-- Contenedor con Burbujas Flotantes -->
+            <div class="bg-white p-10 md:p-16 rounded-[2.5rem] border border-gray-200 shadow-xl max-w-4xl mx-auto text-center relative overflow-hidden" data-aos="zoom-in">
+                <div id="bubble-container" class="bubble-container"></div>
+                <div class="absolute -top-10 -left-10 text-origen-gold/10 text-9xl font-serif z-0">"</div>
+                <h3 class="relative z-10 text-xl md:text-2xl font-bold text-origen-gold uppercase tracking-widest mb-6" data-i18n="focus_title">Nuestro enfoque</h3>
+                <p class="relative z-10 text-xl md:text-2xl text-origen-navy font-serif italic leading-relaxed mb-6" data-i18n="focus_desc_1">
+                    "En Origen Media no creemos en campañas aisladas. Construimos ecosistemas de marca donde cada acción fortalece la percepción pública de la empresa."
+                </p>
+                <p class="relative z-10 text-base text-gray-600 font-medium max-w-2xl mx-auto" data-i18n="focus_desc_2">
+                    Porque al final, una marca fuerte no es la que más publicidad tiene. <strong class="text-origen-navy">Es la que la gente reconoce, respeta y recuerda.</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOCIOS COMERCIALES -->
+    <section id="socios" class="py-24 bg-origen-navy relative overflow-hidden text-center border-y border-origen-gold/20">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-origen-gold/10 via-transparent to-transparent pointer-events-none"></div>
+        <div class="container mx-auto px-6 relative z-10" data-aos="zoom-in">
+            <h2 class="text-3xl md:text-5xl font-black text-white tracking-tighter mb-4 uppercase" data-i18n="soc_title">Socios Comerciales</h2>
+            <p class="text-lg md:text-xl text-origen-gold font-serif italic mb-10" data-i18n="soc_subtitle">Alianzas construidas desde 2015.</p>
+            <button onclick="openPartnersOverlay()" class="px-8 py-4 bg-origen-gold text-white font-bold rounded-full hover:bg-white hover:text-origen-navy transition-all duration-300 shadow-[0_0_20px_rgba(197,160,99,0.4)]">
+                <span data-i18n="soc_btn">Ver todas las marcas</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- FOOTER ANIMADO -->
+    <section class="bg-origen-navy text-white py-24 md:py-32 overflow-hidden relative" id="contacto">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-16">
+                <div class="w-full lg:w-1/2 h-48 md:h-64 relative font-black uppercase leading-[0.85] tracking-tighter text-[4.5rem] md:text-[7rem] lg:text-[8.5rem]">
+                    <div class="absolute inset-0 flex flex-col justify-center anim-state-1">
+                        <div class="text-white">ORIGEN</div>
+                        <div class="text-origen-gold">MEDIA</div>
+                    </div>
+                    <div class="absolute inset-0 flex flex-col justify-center anim-state-2 opacity-0">
+                        <div class="text-white">GET</div>
+                        <div class="relative w-max inline-block my-2">
+                            <span class="relative z-10 text-white select-none">SHIT</span>
+                            <div class="absolute top-1/2 left-[-2%] -translate-y-1/2 h-[85%] w-[104%] bg-[#ef4444] anim-red-block z-20"></div>
+                        </div>
+                        <div class="text-white">DONE</div>
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-1/2 relative lg:pl-20 mt-12 lg:mt-0">
+                    <div class="absolute left-0 top-0 w-[1px] h-full bg-white/10 hidden lg:block overflow-hidden">
+                        <div class="w-full h-1/3 bg-gradient-to-b from-transparent via-origen-gold to-transparent anim-scanline"></div>
+                    </div>
+
+                    <h3 class="text-4xl md:text-5xl font-black tracking-tighter mb-2 uppercase sync-glitch">
+                        Harold Huerta<span class="animate-pulse text-origen-gold">_</span>
+                    </h3>
+                    <p class="text-gray-400 font-bold uppercase tracking-widest text-xs mb-12" data-i18n="harold_role">CEO & Director Creativo</p>
+                    
+                    <div class="space-y-6 text-xl md:text-2xl font-medium text-gray-300 tracking-tight font-serif">
+                        <button onclick="openContactForm('General')" class="hover:text-white transition-colors cursor-pointer flex items-center gap-6 group w-max">
+                            <div class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-origen-gold group-hover:border-origen-gold transition-all duration-300">
+                                <i class="fa-regular fa-envelope text-origen-gold group-hover:text-white transition-colors duration-300"></i> 
+                            </div>
+                            <span class="font-sans border-b border-transparent group-hover:border-white transition-all pb-1" data-i18n="btn_contact_form">Formulario de Contacto Directo</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-24 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 font-bold uppercase tracking-widest relative z-20">
+                <div class="mb-4 md:mb-0 text-white">Origen Media</div>
+                <div>&copy; 2026. <span data-i18n="foot_copy">Todos los derechos reservados.</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- OVERLAYS Y MODALES UNIFICADOS                             -->
+    <!-- ========================================================= -->
+
+    <!-- OVERLAY: SOCIOS COMERCIALES -->
+    <div id="partnersOverlay" class="fixed inset-0 z-[60] bg-origen-navy w-full h-full transform translate-y-full transition-transform duration-500 ease-in-out flex flex-col overflow-hidden hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-origen-gold/10 via-transparent to-transparent pointer-events-none"></div>
+        <div class="container mx-auto px-6 py-6 md:py-8 flex justify-between items-center border-b border-white/10 relative z-10">
+            <h2 class="text-xl md:text-2xl font-black text-white tracking-widest uppercase" data-i18n="soc_title">Socios Comerciales</h2>
+            <button onclick="closePartnersOverlay()" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-origen-gold flex items-center justify-center text-white transition-all text-lg md:text-xl"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto pb-32 pt-12 relative z-10">
+            <div class="container mx-auto px-6 max-w-6xl text-center">
+                <div class="w-20 h-20 mx-auto rounded-full border-4 border-origen-gold border-r-transparent rotate-45 mb-8 opacity-90 shadow-[0_0_30px_rgba(197,160,99,0.3)]"></div>
+                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tighter mb-4 uppercase">ORIGEN MEDIA</h2>
+                <p class="text-xl text-origen-gold font-serif italic mb-20" data-i18n="soc_subtitle">Alianzas construidas desde 2015.</p>
+
+                <div class="space-y-20">
+                    <div>
+                        <div class="flex items-center justify-center gap-6 mb-10">
+                            <div class="h-px bg-gradient-to-r from-transparent to-origen-gold/50 flex-1 max-w-[150px]"></div>
+                            <h3 class="text-sm md:text-base font-bold text-origen-gold uppercase tracking-[0.3em]" data-i18n="soc_cat1">Automotriz</h3>
+                            <div class="h-px bg-gradient-to-l from-transparent to-origen-gold/50 flex-1 max-w-[150px]"></div>
+                        </div>
+                        <div class="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 opacity-80 hover:opacity-100 transition-opacity duration-300">
+                            <span class="text-2xl md:text-4xl font-serif italic text-white drop-shadow-md">Alfa Romeo</span>
+                            <span class="text-2xl md:text-4xl font-black uppercase tracking-tighter text-white">NISSAN</span>
+                            <span class="text-xl md:text-3xl font-sans uppercase tracking-[0.2em] text-white">Infiniti</span>
+                            <span class="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white">RAM</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-center gap-6 mb-10">
+                            <div class="h-px bg-gradient-to-r from-transparent to-origen-gold/50 flex-1 max-w-[150px]"></div>
+                            <h3 class="text-sm md:text-base font-bold text-origen-gold uppercase tracking-[0.3em]" data-i18n="soc_cat2">Moda y Estilo de Vida</h3>
+                            <div class="h-px bg-gradient-to-l from-transparent to-origen-gold/50 flex-1 max-w-[150px]"></div>
+                        </div>
+                        <div class="flex flex-wrap justify-center items-center gap-x-10 gap-y-8 opacity-80 hover:opacity-100 transition-opacity duration-300">
+                            <span class="text-xl md:text-2xl font-bold uppercase tracking-widest text-white">Foster Grant</span>
+                            <span class="text-2xl md:text-3xl font-black italic tracking-tighter text-white">Alpinestars</span>
+                            <span class="text-xl md:text-2xl font-black uppercase tracking-tight text-white">Mecánico Jeans</span>
+                            <span class="text-2xl md:text-3xl font-black uppercase tracking-tighter text-white">G-Star Raw</span>
+                            <span class="text-2xl md:text-3xl font-black tracking-tight text-white">Jeep</span>
+                            <span class="text-xl md:text-2xl font-black uppercase tracking-[0.2em] text-white">Dodge</span>
+                            <span class="text-2xl md:text-3xl font-black uppercase tracking-tighter text-white">Stax</span>
+                            <span class="text-xl md:text-2xl font-bold uppercase tracking-widest text-white">Quiksilver</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY: ESTRUCTURA OPERATIVA -->
+    <div id="teamOverlay" class="fixed inset-0 z-[60] bg-white/95 backdrop-blur-xl w-full h-full transform translate-y-full transition-transform duration-500 ease-in-out flex flex-col overflow-hidden hidden">
+        <div class="container mx-auto px-6 py-6 md:py-8 flex justify-between items-start md:items-center border-b border-gray-100">
+            <div class="flex flex-col">
+                <div class="flex items-center gap-3 mb-1">
+                    <div class="w-6 h-6 md:w-8 md:h-8 rounded-full border-[3px] md:border-4 border-origen-gold border-r-transparent rotate-45"></div>
+                    <h2 class="text-2xl md:text-4xl font-black text-origen-navy tracking-widest uppercase serif-title">ORIGEN MEDIA</h2>
+                </div>
+                <span class="text-[9px] md:text-xs text-gray-500 font-bold tracking-widest uppercase mt-2 md:mt-1">Hybrid Advertising • Marketing • Public Relations • Cinema Production</span>
+            </div>
+            <button onclick="closeTeamOverlay()" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 flex items-center justify-center text-origen-navy hover:bg-origen-navy hover:text-white transition-all text-lg md:text-xl flex-shrink-0 ml-4"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto pb-20 pt-10">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <span class="text-origen-gold font-bold uppercase tracking-widest text-xs mb-2 block" data-i18n="lead_tag">Liderazgo Directivo</span>
+                    <h3 class="text-3xl font-bold text-origen-navy serif-title mb-4" data-i18n="org_title">Estructura Operativa</h3>
+                    <p class="text-lg text-origen-navy font-medium mb-3 max-w-3xl mx-auto" data-i18n="org_desc_new">Firma híbrida que integra Publicidad, Mkt, PR y Producción Cinematográfica.</p>
+                    <p class="text-gray-500" data-i18n="org_desc">No operamos con estructuras mínimas. Cada área cuenta con niveles jerárquicos.</p>
+                    <p class="text-xs text-origen-gold font-bold uppercase mt-6 animate-bounce" data-i18n="org_hint">Selecciona una división para ver arquitectura</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-10 relative">
+                     <div onclick="openModal('harold')" class="group bg-origen-navy p-8 rounded-2xl shadow-xl border-2 border-transparent hover:border-origen-gold relative overflow-hidden cursor-pointer flex flex-col items-center justify-center">
+                         <div class="w-20 h-20 mx-auto bg-origen-gold rounded-full flex items-center justify-center text-white text-3xl mb-4"><i class="fa-solid fa-crown"></i></div>
+                         <h4 class="font-bold text-white text-xl text-center">Harold Huerta</h4>
+                         <span class="text-xs text-origen-gold uppercase tracking-wider block mt-1 text-center font-bold" data-i18n="org_h_role">Fundador · CEO / CCO</span>
+                         <p class="text-gray-400 text-xs italic text-center mt-4 px-2 opacity-80 group-hover:text-white transition-colors" data-i18n="harold_quote">"No vemos engagement, vemos personas."</p>
+                     </div>
+                     <div onclick="openModal('natalia')" class="group bg-origen-navy p-8 rounded-2xl shadow-xl border-2 border-transparent hover:border-purple-400 relative overflow-hidden cursor-pointer flex flex-col items-center justify-center">
+                         <div class="w-20 h-20 mx-auto bg-purple-500 rounded-full flex items-center justify-center text-white text-3xl mb-4"><i class="fa-regular fa-star"></i></div>
+                         <h4 class="font-bold text-white text-xl text-center">Natalia Guzmán</h4>
+                         <span class="text-xs text-purple-300 uppercase tracking-wider block mt-1 text-center font-bold" data-i18n="org_n_role">Co-fundadora · VP & Dir. PR</span>
+                         <p class="text-gray-400 text-xs italic text-center mt-4 px-2 opacity-80 group-hover:text-white transition-colors" data-i18n="natalia_quote">"Relaciones públicas son relaciones humanas."</p>
+                     </div>
+                </div>
+
+                <div class="flex justify-center border-t pt-8 border-gray-200">
+                     <div onclick="openModal('produccion')" class="group bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:border-origen-gold relative overflow-hidden cursor-pointer w-full max-w-sm flex flex-col items-center justify-center">
+                         <div class="w-14 h-14 mx-auto bg-origen-gold/10 rounded-full flex items-center justify-center text-origen-gold text-xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-clapperboard"></i></div>
+                         <h4 class="font-bold text-origen-navy text-center text-base" data-i18n="org_prod">Producción</h4>
+                         <span class="text-[9px] text-gray-500 uppercase tracking-widest block mt-2 text-center font-bold bg-gray-50 px-3 py-1 rounded-full" data-i18n="org_btn">Ver Jerarquía</span>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY: ÁRBOL DE ESCALAMIENTO -->
+    <div id="treeOverlay" class="fixed inset-0 z-[60] bg-origen-navy w-full h-full transform translate-y-full transition-transform duration-500 ease-in-out flex flex-col overflow-hidden hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-origen-gold/10 via-origen-navy to-origen-navy pointer-events-none"></div>
+        
+        <div class="container mx-auto px-6 py-6 md:py-8 flex justify-between items-center border-b border-white/10 relative z-20 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-tree text-origen-gold text-xl md:text-2xl"></i>
+                <h2 class="text-lg md:text-2xl font-black text-white tracking-widest uppercase" data-i18n="tree_title">Árbol de Escalamiento</h2>
+            </div>
+            <button onclick="closeTreeOverlay()" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-origen-gold flex items-center justify-center text-white transition-all text-lg md:text-xl"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="flex-1 relative w-full flex flex-col items-center overflow-y-auto overflow-x-hidden pt-8 pb-32">
+            
+            <div class="text-center mb-8 max-w-2xl px-6 relative z-20" data-aos="fade-down">
+                <h3 class="text-white text-lg md:text-2xl uppercase tracking-[0.3em] font-black mb-2" data-i18n="tree_branches_title">Las Ramas: Escalamiento</h3>
+                <p class="text-origen-gold text-sm md:text-base font-medium font-serif italic" data-i18n="tree_branches_desc">Planes avanzados listos para dominar su industria.</p>
+            </div>
+            
+            <div class="relative w-full max-w-4xl flex flex-col items-center flex-shrink-0 mt-4">
+                <div class="relative w-full h-[400px] md:h-[450px]">
+                    <div class="absolute bottom-0 left-1/2 w-3 md:w-4 h-[85%] bg-gradient-to-t from-origen-gold via-origen-gold to-origen-gold/20 transform -translate-x-1/2 rounded-t-full shadow-[0_0_30px_#C5A063] z-0"></div>
+                    <div class="absolute bottom-[30%] left-[25%] md:left-[30%] w-[25%] md:w-[20%] h-[50%] border-b-[4px] md:border-b-[6px] border-l-[4px] md:border-l-[6px] border-origen-gold/70 rounded-bl-[40px] md:rounded-bl-[60px] shadow-[inset_5px_-5px_15px_rgba(197,160,99,0.3)] -z-10"></div>
+                    <div class="absolute bottom-[10%] right-[20%] md:right-[25%] w-[30%] h-[50%] border-b-[4px] md:border-b-[6px] border-r-[4px] md:border-r-[6px] border-origen-gold/70 rounded-br-[40px] md:rounded-br-[60px] shadow-[inset_-5px_-5px_15px_rgba(197,160,99,0.3)] -z-10"></div>
+
+                    <div class="absolute top-[0%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center cursor-pointer group z-20 hover:-translate-y-2 transition-transform duration-300" onclick="openPhilosophyModal()">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-origen-navy border-[4px] border-white rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(255,255,255,0.8)] pulse-glow group-hover:scale-105 transition-transform duration-300 relative">
+                            <i class="fa-solid fa-eye text-2xl md:text-3xl text-white"></i>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-md px-5 py-1.5 rounded-xl mt-3 border border-white/20 text-center shadow-lg group-hover:bg-white/20 transition-colors whitespace-nowrap">
+                            <h4 class="text-white font-bold serif-title text-sm md:text-base" data-i18n="tree_philosophy">Visión & Filosofía</h4>
+                        </div>
+                    </div>
+
+                    <div class="absolute top-[25%] left-[25%] md:left-[30%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center cursor-pointer group z-10 hover:-translate-y-2 transition-transform duration-300" onclick="openPlanModal('signature')">
+                        <div class="w-20 h-20 md:w-24 md:h-24 bg-origen-navy border-[4px] border-origen-gold rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(197,160,99,0.8)] group-hover:scale-105 transition-transform duration-300">
+                            <i class="fa-solid fa-crown text-3xl md:text-4xl text-white"></i>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-md px-6 py-2 rounded-2xl mt-3 border border-white/20 text-center shadow-lg group-hover:bg-origen-gold/20 transition-colors whitespace-nowrap">
+                            <h4 class="text-white font-bold serif-title text-xl md:text-2xl">Signature</h4>
+                            <span class="text-origen-gold text-[10px] md:text-xs uppercase tracking-widest font-bold" data-i18n="pack3_sub">Crecimiento Agresivo</span>
+                        </div>
+                    </div>
+
+                    <div class="absolute top-[45%] right-[20%] md:right-[25%] transform translate-x-1/2 -translate-y-1/2 flex flex-col items-center cursor-pointer group z-10 hover:-translate-y-2 transition-transform duration-300" onclick="openPlanModal('strategic')">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-white border-[4px] border-origen-gold rounded-full flex items-center justify-center shadow-[0_0_25px_rgba(197,160,99,0.5)] group-hover:scale-105 transition-transform duration-300 relative">
+                            <i class="fa-solid fa-bolt text-2xl md:text-3xl text-origen-navy"></i>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl mt-3 border border-white/20 text-center shadow-lg group-hover:bg-white/20 transition-colors whitespace-nowrap">
+                            <h4 class="text-white font-bold serif-title text-lg md:text-xl">Strategic</h4>
+                            <span class="text-blue-300 text-[9px] md:text-[10px] uppercase tracking-widest font-bold" data-i18n="pack2_sub">Posicionamiento Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="absolute bottom-[5%] left-1/2 transform -translate-x-1/2 flex flex-col items-center cursor-pointer group z-10 hover:-translate-y-2 transition-transform duration-300" onclick="openPlanModal('essential')">
+                        <div class="w-14 h-14 md:w-16 md:h-16 bg-gray-100 border-[3px] border-gray-400 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover:scale-105 transition-transform duration-300">
+                            <i class="fa-solid fa-seedling text-xl md:text-2xl text-gray-500"></i>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-xl mt-3 border border-white/10 text-center group-hover:bg-white/10 transition-colors whitespace-nowrap">
+                            <h4 class="text-white font-bold serif-title text-base md:text-lg">Essential</h4>
+                            <span class="text-gray-400 text-[8px] md:text-[9px] uppercase tracking-widest font-bold" data-i18n="pack1_sub">Mantenimiento</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full relative flex items-center justify-center h-20 -my-4 z-20">
+                    <div class="absolute inset-0 bg-origen-gold/20 blur-[40px] rounded-[100%]"></div>
+                    <div class="w-full max-w-5xl h-1 bg-gradient-to-r from-transparent via-origen-gold to-transparent relative z-10 shadow-[0_0_15px_#C5A063]"></div>
+                    <div class="absolute bg-origen-navy px-6 md:px-8 py-2 rounded-full border border-origen-gold z-20 shadow-[0_0_20px_rgba(197,160,99,0.4)]">
+                        <span class="text-origen-gold text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]" data-i18n="tree_ground">Línea de Escalamiento</span>
+                    </div>
+                </div>
+
+                <div class="relative w-full h-[400px] md:h-[450px]">
+                    <div class="absolute top-0 left-1/2 w-3 md:w-4 h-[60%] bg-gradient-to-b from-origen-gold via-origen-gold/50 to-transparent transform -translate-x-1/2 rounded-b-full shadow-[0_0_20px_#C5A063] z-0"></div>
+                    <div class="absolute top-0 left-1/2 w-[30%] h-[30%] border-t-[4px] md:border-t-[6px] border-r-[4px] md:border-r-[6px] border-origen-gold/60 rounded-tr-[40px] md:rounded-tr-[60px] shadow-[inset_-5px_5px_15px_rgba(197,160,99,0.2)] -z-10"></div>
+                    <div class="absolute top-[10%] right-1/2 w-[35%] h-[45%] border-t-[4px] md:border-t-[6px] border-l-[4px] md:border-l-[6px] border-blue-500/60 rounded-tl-[40px] md:rounded-tl-[60px] shadow-[inset_5px_5px_15px_rgba(59,130,246,0.2)] -z-10"></div>
+
+                    <div class="absolute top-[30%] right-[20%] md:right-[20%] transform translate-x-1/2 -translate-y-1/2 flex flex-col items-center cursor-pointer group z-10 hover:translate-y-2 transition-transform duration-300" onclick="openRootModal('estructuramos')">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-origen-navy border-[3px] border-origen-gold rounded-full flex items-center justify-center shadow-[0_0_25px_rgba(197,160,99,0.6)] group-hover:scale-105 transition-transform duration-300">
+                            <i class="fa-solid fa-pen-nib text-2xl md:text-3xl text-origen-gold"></i>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-md px-4 py-2 rounded-xl mt-3 border border-white/10 text-center group-hover:bg-white/10 transition-colors whitespace-nowrap">
+                            <h4 class="text-origen-gold font-bold serif-title text-sm md:text-base" data-i18n="way1_title_short">Estructuramos</h4>
+                        </div>
+                    </div>
+
+                    <div class="absolute top-[55%] left-[15%] md:left-[15%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center cursor-pointer group z-10 hover:translate-y-2 transition-transform duration-300" onclick="openRootModal('reconstruimos')">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-origen-navy border-[3px] border-blue-500 rounded-full flex items-center justify-center shadow-[0_0_25px_rgba(59,130,246,0.6)] group-hover:scale-105 transition-transform duration-300 relative">
+                            <i class="fa-solid fa-screwdriver-wrench text-2xl md:text-3xl text-blue-400 relative z-10"></i>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-md px-4 py-2 rounded-xl mt-4 border border-white/10 text-center group-hover:bg-white/10 transition-colors whitespace-nowrap">
+                            <h4 class="text-blue-400 font-bold serif-title text-sm md:text-base" data-i18n="way2_title_short">Reconstruimos</h4>
+                        </div>
+                    </div>
+
+                    <!-- NODO DE ANÁLISIS IA -->
+                    <div class="absolute top-[65%] md:top-[60%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center cursor-pointer group z-20 hover:translate-y-2 transition-transform duration-300" onclick="openAiModal()">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-origen-navy border-[3px] border-white rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.4)] group-hover:scale-105 transition-transform duration-300 relative pulse-glow">
+                            <i class="fa-solid fa-wand-magic-sparkles text-2xl md:text-3xl text-white relative z-10"></i>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-md px-4 py-2 rounded-xl mt-4 border border-white/10 text-center group-hover:bg-white/10 transition-colors whitespace-nowrap">
+                            <h4 class="text-white font-bold serif-title text-sm md:text-base" data-i18n="ai_node_title">Auditoría IA</h4>
+                            <span class="text-gray-400 text-[8px] uppercase tracking-widest block mt-1" data-i18n="ai_node_sub">Diagnóstico preliminar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4 max-w-2xl px-6 relative z-20 border-t border-white/10 pt-10" data-aos="fade-up">
+                <h3 class="text-gray-300 text-lg md:text-xl uppercase tracking-[0.3em] font-black mb-2" data-i18n="tree_roots_title">Las Raíces: Fundamentos</h3>
+                <p class="text-gray-500 text-sm md:text-base font-medium" data-i18n="tree_roots_desc">Paquetes base para estructurar o reconstruir tu marca.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PLANES (DOBLE COLUMNA LITE/PRO) -->
+    <div id="planModal" class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closePlanModal()"></div>
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative z-10 overflow-hidden flex flex-col max-h-[90vh] transform transition-all scale-95 opacity-0" id="planModalContent">
+            <div class="bg-origen-navy p-6 md:p-8 text-center border-b-[4px] border-origen-gold" id="planModalHeader">
+                <button onclick="closePlanModal()" class="absolute top-4 right-4 text-white/50 hover:text-white text-xl z-20"><i class="fa-solid fa-xmark"></i></button>
+                <span id="planModalSubtitle" class="text-origen-gold text-[10px] font-bold uppercase tracking-widest mb-1 block">Subtítulo</span>
+                <h3 id="planModalTitle" class="text-3xl md:text-4xl font-black text-white serif-title">Plan Name</h3>
+            </div>
+            <div class="p-6 md:p-8 bg-gray-50 flex-grow overflow-y-auto">
+                <div id="planModalVariants" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                <div class="mt-8 pt-6 border-t border-gray-200 text-center">
+                    <button onclick="openContactForm('Plan ' + document.getElementById('planModalTitle').innerText)" class="inline-block px-8 py-4 bg-origen-navy text-white font-bold rounded-full w-full md:w-auto min-w-[200px] uppercase text-xs tracking-widest hover:bg-origen-gold transition-colors" data-i18n="hero_cta1">Agendar reunión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL RAÍCES -->
+    <div id="rootModal" class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeRootModal()"></div>
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden flex flex-col max-h-[90vh] transform transition-all scale-95 opacity-0" id="rootModalContent">
+            <div class="p-8 text-white border-b-[4px]" id="rootModalHeader">
+                <button onclick="closeRootModal()" class="absolute top-4 right-4 text-white/50 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+                <span id="rootModalSubtitle" class="text-[10px] font-bold uppercase tracking-widest mb-1 block">Subtítulo</span>
+                <h3 id="rootModalTitle" class="text-2xl md:text-3xl font-black serif-title">Root Name</h3>
+            </div>
+            <div class="p-8 bg-gray-50 overflow-y-auto">
+                <p id="rootModalDesc" class="text-gray-600 text-sm leading-relaxed mb-6"></p>
+                <h4 class="text-origen-navy font-bold mb-4 flex items-center gap-2 border-b border-gray-200 pb-2"><i class="fa-solid fa-layer-group text-origen-gold text-sm" id="rootModalIcon"></i> <span data-i18n="way_inc">Incluye:</span></h4>
+                <ul id="rootModalFeatures" class="space-y-3 mb-6"></ul>
+                <div id="rootModalResultContainer" class="p-4 rounded-xl text-center">
+                    <span class="font-bold text-[10px] block mb-1 uppercase tracking-widest" data-i18n="way1_res_label">Resultado</span>
+                    <p class="font-serif italic text-base" id="rootModalResult"></p>
+                </div>
+                <div class="mt-6 text-center">
+                    <button onclick="openContactForm('Raíz ' + document.getElementById('rootModalTitle').innerText)" class="px-8 py-3 bg-origen-navy text-white font-bold rounded-full w-full uppercase text-xs tracking-widest hover:bg-origen-gold transition-colors" data-i18n="hero_cta1">Agendar reunión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EQUIPO -->
+    <div id="teamModal" class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div id="modalContent" class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl relative z-10 overflow-hidden flex flex-col max-h-[85vh] transform transition-all scale-95 opacity-0">
+            <div class="bg-origen-navy p-8 md:p-10 relative">
+                <button onclick="closeModal()" class="absolute top-6 right-6 text-white/50 hover:text-white text-2xl z-20"><i class="fa-solid fa-xmark"></i></button>
+                <span id="modalRole" class="text-origen-gold text-xs font-bold uppercase tracking-widest mb-2 block">Role</span>
+                <h3 id="modalName" class="text-3xl font-bold text-white serif-title">Name</h3>
+            </div>
+            <div class="p-8 bg-white overflow-y-auto">
+                <div class="mb-8">
+                    <h4 class="text-origen-navy font-bold text-lg mb-4 flex items-center gap-2 border-b pb-2"><i class="fa-solid fa-sitemap text-origen-gold"></i> <span data-i18n="modal_arch">Arquitectura Funcional</span></h4>
+                    <ul id="modalTasks" class="space-y-4 text-sm text-gray-600"></ul>
+                </div>
+                <p id="modalSlogan" class="text-origen-navy font-bold italic text-center"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- NUEVO MODAL: PILARES DE LA AGENCIA -->
+    <div id="pillarModal" class="fixed inset-0 z-[130] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closePillarModal()"></div>
+        <div id="pillarModalContent" class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl relative z-10 overflow-hidden flex flex-col max-h-[85vh] transform transition-all scale-95 opacity-0">
+            <div class="p-8 md:p-10 relative overflow-hidden flex-shrink-0" id="pillarHeader">
+                <button onclick="closePillarModal()" class="absolute top-6 right-6 text-white/50 hover:text-white text-2xl z-20"><i class="fa-solid fa-xmark"></i></button>
+                <div class="relative z-10">
+                    <span id="pillarTag" class="text-xs font-bold uppercase tracking-widest mb-2 block">Pilar</span>
+                    <h3 id="pillarTitle" class="text-3xl md:text-4xl font-bold text-white serif-title">Title</h3>
+                </div>
+            </div>
+            <div class="p-8 md:p-10 bg-white overflow-y-auto flex-grow">
+                <p id="pillarSlogan" class="text-origen-navy font-bold italic text-lg md:text-xl mb-6 font-serif"></p>
+                <p id="pillarDesc" class="text-gray-600 text-sm leading-relaxed mb-8"></p>
+                
+                <h4 class="text-origen-navy font-bold text-lg mb-4 flex items-center gap-2 border-b border-gray-100 pb-2"><i class="fa-solid fa-cube text-origen-gold"></i> <span data-i18n="pillar_inc">Elementos del Pilar</span></h4>
+                <ul id="pillarTasks" class="space-y-4 text-sm text-gray-600 mb-8"></ul>
+                
+                <div class="text-center pt-6 border-t border-gray-100">
+                    <button onclick="closePillarModal(); openTreeOverlay();" class="px-8 py-4 bg-origen-navy text-white font-bold rounded-full shadow-lg hover:bg-origen-gold transition-colors text-xs uppercase tracking-widest" data-i18n="btn_scale_now">Ver cómo escalar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE FILOSOFÍA -->
+    <div id="philosophyModal" class="fixed inset-0 z-[130] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closePhilosophyModal()"></div>
+        <div id="philosophyModalContent" class="bg-origen-navy rounded-3xl shadow-2xl w-full max-w-2xl relative z-10 overflow-hidden flex flex-col border border-origen-gold/30 transform transition-all scale-95 opacity-0">
+            <div class="p-8 md:p-12 text-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-origen-gold/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
+                
+                <button onclick="closePhilosophyModal()" class="absolute top-4 right-4 text-white/50 hover:text-white text-xl z-20"><i class="fa-solid fa-xmark"></i></button>
+                
+                <div class="relative z-10">
+                    <i class="fa-solid fa-gem text-4xl md:text-5xl text-origen-gold mb-6 pulse-glow"></i>
+                    <h3 class="text-xs md:text-sm font-bold uppercase tracking-[0.3em] text-origen-gold mb-2" data-i18n="phil_tag">Nuestra Filosofía</h3>
+                    <h2 class="text-3xl md:text-5xl font-black text-white serif-title leading-tight mb-8" data-i18n="phil_title">El Origen de la Grandeza</h2>
+                    
+                    <p class="text-gray-300 text-lg md:text-xl leading-relaxed mb-8 font-serif italic" data-i18n="phil_desc1">
+                        Liderados por la visión estratégica de Harold Huerta y la maestría relacional de Natalia Guzmán, en Origen Media no vemos clientes, vemos legados.
+                    </p>
+                    
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 text-left shadow-inner">
+                        <p class="text-sm md:text-base text-gray-300 leading-relaxed font-medium" data-i18n="phil_desc2">
+                            Existimos para las marcas que no se conforman con existir. Las que nacieron para liderar, inspirar y redefinir su industria. Entendemos que la grandeza no se improvisa: se construye desde la raíz con precisión, se cuenta con pasión y se sostiene con relaciones verdaderas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE ANÁLISIS IA (DISEÑO PREMIUM) -->
+    <div id="aiModal" class="fixed inset-0 z-[140] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeAiModal()"></div>
+        <div id="aiModalContent" class="bg-origen-navy rounded-3xl shadow-2xl w-full max-w-4xl relative z-10 overflow-hidden flex flex-col border border-white/10 transform transition-all scale-95 opacity-0 max-h-[95vh]">
+            <div class="p-6 md:p-8 relative overflow-hidden flex-shrink-0 text-center border-b border-white/10">
+                <button onclick="closeAiModal()" class="absolute top-4 right-4 text-white/50 hover:text-white text-xl z-20"><i class="fa-solid fa-xmark"></i></button>
+                <i class="fa-solid fa-robot text-3xl text-origen-gold mb-3"></i>
+                <h3 class="text-2xl md:text-3xl font-black text-white serif-title" data-i18n="ai_modal_title">Auditoría de Marca IA</h3>
+                <p class="text-gray-400 text-xs uppercase tracking-widest mt-1" data-i18n="ai_modal_sub">Análisis predictivo de ecosistema digital</p>
+            </div>
+            
+            <div class="p-6 md:p-8 bg-origen-navy flex-grow overflow-y-auto">
+                <div id="aiInputSection" class="max-w-2xl mx-auto">
+                    <p class="text-gray-300 text-sm mb-6 text-center" data-i18n="ai_intro">Ingresa los enlaces de tu marca (sitio web, redes sociales, portafolios, etc.). Nuestra IA rastreará la web y evaluará tu presencia actual generando un diagnóstico táctico por plataforma.</p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <input type="url" id="aiUrl1" placeholder="Enlace 1 (Ej. https://instagram.com/tumarca)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-origen-gold transition-colors">
+                        <input type="url" id="aiUrl2" placeholder="Enlace 2 (Ej. Web o TikTok)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-origen-gold transition-colors">
+                        <input type="url" id="aiUrl3" placeholder="Enlace 3 (Opcional)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-origen-gold transition-colors">
+                    </div>
+                    
+                    <p id="aiErrorMsg" class="text-red-400 text-xs hidden mb-4 text-center"></p>
+                    
+                    <button onclick="analyzeSocialMedia()" class="w-full py-4 bg-white text-origen-navy font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors shadow-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="ai_btn_analyze">Generar Diagnóstico</span>
+                    </button>
+                </div>
+
+                <div id="aiLoadingSection" class="hidden flex-col items-center justify-center py-16">
+                    <span class="ai-loader mb-6"></span>
+                    <p class="text-origen-gold text-sm font-bold uppercase tracking-widest animate-pulse" data-i18n="ai_loading">Buscando en la web y analizando ecosistema...</p>
+                </div>
+
+                <div id="aiOutputSection" class="hidden">
+                    <div id="aiOutputText" class="w-full"></div>
+                    
+                    <div class="mt-8 text-center border-t border-white/10 pt-6">
+                        <p class="text-gray-400 text-xs mb-4" data-i18n="ai_upsell_text">La IA solo detecta la superficie. Harold Huerta (CEO) puede diseñar la estrategia profunda.</p>
+                        <button onclick="closeAiModal(); openContactForm('Análisis de IA Exhaustivo');" class="inline-block px-8 py-4 bg-origen-gold text-white font-black rounded-xl text-center shadow-[0_0_20px_rgba(197,160,99,0.3)] hover:bg-white hover:text-origen-navy transition-all uppercase tracking-widest text-xs">
+                            <i class="fa-solid fa-envelope mr-2"></i> <span data-i18n="ai_btn_ceo">Solicitar Análisis Profundo a CEO</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NUEVO MODAL: SISTEMA DE CONTACTO INFALIBLE (SIN BACKEND) -->
+    <div id="contactModal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeContactForm()"></div>
+        <div id="contactModalContent" class="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden flex flex-col transform transition-all scale-95 opacity-0">
+            <div class="p-8 border-b border-gray-100 relative">
+                <button onclick="closeContactForm()" class="absolute top-6 right-6 text-gray-400 hover:text-origen-navy text-xl z-20"><i class="fa-solid fa-xmark"></i></button>
+                <h3 class="text-2xl font-black text-origen-navy serif-title" data-i18n="form_title">Iniciar Proyecto</h3>
+                <p class="text-sm text-gray-500 mt-2 font-medium" data-i18n="form_desc">Completa este cuestionario rápido para enviarnos tu solicitud directamente.</p>
+            </div>
+            
+            <div class="p-8 bg-gray-50">
+                <div class="space-y-4" id="contactFormFields">
+                    <input type="hidden" id="contactSubject" value="General">
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1" data-i18n="form_lbl_name">Tu Nombre / Marca</label>
+                        <input type="text" id="contactName" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-origen-navy transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1" data-i18n="form_lbl_links">Enlace Principal (Instagram, Web, etc.)</label>
+                        <input type="text" id="contactLinks" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-origen-navy transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1" data-i18n="form_lbl_goal">¿Qué buscas lograr?</label>
+                        <textarea id="contactGoal" rows="3" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-origen-navy transition-colors"></textarea>
+                    </div>
+                    
+                    <button onclick="prepareEmailOptions()" class="w-full py-4 bg-origen-navy text-white font-bold rounded-xl hover:bg-origen-gold transition-colors mt-2" data-i18n="form_btn_next">Continuar</button>
+                </div>
+
+                <div id="contactOptions" class="hidden space-y-3">
+                    <p class="text-sm text-gray-600 mb-4 text-center font-medium" data-i18n="form_opt_desc">Selecciona tu plataforma preferida para enviar el mensaje ya redactado:</p>
+                    
+                    <button onclick="sendEmail('gmail')" class="w-full py-3 bg-white border border-red-200 text-red-600 font-bold rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-envelope text-lg"></i> Enviar con Gmail
+                    </button>
+                    <button onclick="sendEmail('outlook')" class="w-full py-3 bg-white border border-blue-200 text-blue-600 font-bold rounded-xl hover:bg-blue-50 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-envelope-open text-lg"></i> Enviar con Outlook
+                    </button>
+                    <button onclick="sendEmail('default')" class="w-full py-3 bg-origen-navy text-white font-bold rounded-xl hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-mobile-screen text-lg"></i> App por defecto (Mail, Apple, etc.)
+                    </button>
+                    
+                    <button onclick="resetContactForm()" class="w-full py-2 text-xs text-gray-400 font-bold uppercase tracking-widest mt-4 hover:text-gray-600" data-i18n="form_btn_back">Volver</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        window.addEventListener('load', () => {
+            if (typeof AOS !== 'undefined') {
+                AOS.init({ once: true, offset: 50, duration: 800 });
+            }
+            document.querySelectorAll('.hidden').forEach(el => {
+                if(el.id.includes('Overlay') || el.id.includes('Modal')) {
+                    el.classList.add('hidden');
+                }
+            });
+            initBubbles();
+            
+            // Fix para el bug de la barra de navegación (hacerla sólida al scrollear)
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('mainNav');
+                if (window.scrollY > 20) {
+                    nav.style.background = 'rgba(255, 255, 255, 0.98)';
+                    nav.style.boxShadow = '0 10px 30px -10px rgba(0,0,0,0.1)';
+                    nav.style.backdropFilter = 'blur(30px)';
+                    nav.style.webkitBackdropFilter = 'blur(30px)';
+                } else {
+                    nav.style.background = 'rgba(255, 255, 255, 0.85)';
+                    nav.style.boxShadow = 'none';
+                    nav.style.backdropFilter = 'blur(20px)';
+                    nav.style.webkitBackdropFilter = 'blur(20px)';
+                }
+            });
+        });
+
+        const i18n = {
+            es: {
+                nav_agency_menu: "La Agencia", nav_philosophy: "Filosofía", nav_leadership: "Liderazgo", nav_org: "Estructura Operativa",
+                nav_verticals: "Verticales", nav_pr: "Relaciones Públicas", nav_pub_mkt: "Marketing & Publicidad", nav_prod: "Producción", nav_mgmt: "Management",
+                nav_partners: "Socios", nav_investment: "Inversión",
+                hero_subtitle: "Built from the origin.", badge_pr: "Relaciones Públicas", badge_mkt_pub: "Marketing & Publicidad", badge_mgmt: "Management",
+                hero_cta1: "Agendar reunión", hero_cta2: "Ver estructura Origen Media", hero_cta_sub: "Apartado 2: Reconstruimos tu marca",
+                how_tag: "Cómo lo hacemos", how_title: "Contenido + Estrategia + Relaciones", how_sub: "Una marca se posiciona cuando tres fuerzas trabajan juntas.",
+                h_1_t: "Estrategia", h_1_d: "Análisis del negocio para definir una dirección clara y objetivos medibles.",
+                h_2_t: "Contenido", h_2_d: "Historias y formatos visuales premium que conectan genuinamente.",
+                h_3_t: "Relaciones Públicas", h_3_d: "Conversación pública constante dentro de los medios y la industria.",
+                focus_title: "Nuestro enfoque", focus_desc_1: "Construimos ecosistemas de marca donde cada acción fortalece la percepción pública.", focus_desc_2: "Una marca fuerte es la que la gente reconoce, respeta y recuerda.",
+                btn_explore: "Explorar Pilar", pillar_inc: "Elementos del Pilar", btn_scale_now: "Ver cómo escalar",
+                soc_title: "Socios Comerciales", soc_subtitle: "Alianzas construidas desde 2015.", soc_btn: "Ver todas las marcas",
+                soc_cat1: "Automotriz", soc_cat2: "Moda y Estilo de Vida", soc_cat3: "Consumo y Fitness", soc_cat4: "Retail y Digital",
+                lead_tag: "Liderazgo Directivo", lead_title: "Las mentes detrás.", lead_btn: "Origen Media",
+                harold_quote: "\"No vemos engagement, vemos personas.\"", harold_role: "Fundador · CEO / CCO",
+                natalia_quote: "\"Relaciones públicas son relaciones humanas.\"", natalia_role: "Co-fundadora · VP & Dir. PR",
+                tree_title: "Árbol de Escalamiento", tree_branches_title: "Las Ramas: Escalamiento", tree_branches_desc: "Planes avanzados listos para dominar su industria.",
+                tree_philosophy: "Visión & Filosofía", phil_tag: "Nuestra Filosofía", phil_title: "El Origen de la Grandeza",
+                phil_desc1: "Liderados por la visión estratégica de Harold Huerta y la maestría relacional de Natalia Guzmán, en Origen Media no vemos clientes, vemos legados.",
+                phil_desc2: "Existimos para las marcas que no se conforman con existir. Las que nacieron para liderar, inspirar y redefinir su industria. Entendemos que la grandeza no se improvisa: se construye desde la raíz con precisión, se cuenta con pasión y se sostiene con relaciones verdaderas.",
+                tree_ground: "Línea de Escalamiento", tree_roots_title: "Las Raíces: Fundamentos", tree_roots_desc: "Paquetes base para estructurar o reconstruir tu marca.",
+                way1_title_short: "Estructuramos", way2_title_short: "Reconstruimos", way_inc: "Incluye:", way1_res_label: "Resultado",
+                pack1_sub: "Mantenimiento", pack2_sub: "Posicionamiento Avanzado", pack3_sub: "Crecimiento Agresivo", pack_rec: "Recomendado",
+                org_title: "Estructura Operativa", org_desc_new: "Firma híbrida que integra Publicidad, Mkt, PR y Producción Cinematográfica.", org_desc: "No operamos con estructuras mínimas. Cada área cuenta con niveles jerárquicos.", org_hint: "Selecciona una división para ver arquitectura",
+                org_h_role: "Fundador · CEO / CCO", org_n_role: "Co-fundadora · VP PR",
+                org_pr: "Relaciones P.", org_pub_mkt: "Mkt & Publicidad", org_prod: "Producción", org_mgmt: "Management", org_btn: "Ver Jerarquía",
+                modal_arch: "Arquitectura Funcional", foot_copy: "Todos los derechos reservados.",
+                btn_contact_form: "Formulario de Contacto Directo",
+                form_title: "Iniciar Proyecto", form_desc: "Completa este cuestionario rápido para enviarnos tu solicitud directamente.",
+                form_lbl_name: "Tu Nombre / Marca", form_lbl_links: "Enlaces (Instagram, Web, etc.)", form_lbl_goal: "¿Qué buscas lograr?",
+                form_btn_next: "Continuar", form_opt_desc: "Selecciona tu plataforma preferida para enviar el mensaje ya redactado:", form_btn_back: "Volver",
+                ai_node_title: "Auditoría IA", ai_node_sub: "Diagnóstico preliminar",
+                ai_modal_title: "Auditoría de Marca IA", ai_modal_sub: "Análisis predictivo de ecosistema digital",
+                ai_intro: "Ingresa enlaces (sitio web, redes sociales, etc.). Nuestra IA rastreará la web y evaluará tu presencia actual generando un diagnóstico táctico por plataforma.",
+                ai_btn_analyze: "Generar Diagnóstico", ai_loading: "Buscando en la web y analizando ecosistema...",
+                ai_res_title: "Diagnóstico Estructural", ai_upsell_text: "La IA solo detecta la superficie. Harold Huerta (CEO) puede diseñar la estrategia profunda.",
+                ai_btn_ceo: "Solicitar Análisis Profundo a CEO", 
+                ai_err_empty: "Por favor, ingresa al menos un enlace.",
+                ai_err_domain: "Por favor, ingresa un enlace válido (ej. que inicie con https:// o www).",
+                ai_err_fetch: "Error de conexión con la IA. Por favor, intenta de nuevo."
+            },
+            en: {
+                nav_agency_menu: "The Agency", nav_philosophy: "Philosophy", nav_leadership: "Leadership", nav_org: "Operative Structure",
+                nav_verticals: "Verticals", nav_pr: "Public Relations", nav_pub_mkt: "Marketing & Ads", nav_prod: "Production", nav_mgmt: "Management",
+                nav_partners: "Partners", nav_investment: "Investment",
+                hero_subtitle: "Built from the origin.", badge_pr: "Public Relations", badge_mkt_pub: "Marketing & Advertising", badge_mgmt: "Management",
+                hero_cta1: "Schedule Meeting", hero_cta2: "View Origen Media Structure", hero_cta_sub: "Section 2: We rebuild your brand",
+                how_tag: "How we do it", how_title: "Content + Strategy + Relations", how_sub: "A brand is positioned when three forces work together.",
+                h_1_t: "Strategy", h_1_d: "Business analysis to define a clear direction and measurable goals.",
+                h_2_t: "Content", h_2_d: "Premium stories and visual formats that genuinely connect.",
+                h_3_t: "Public Relations", h_3_d: "Constant public conversation within the media and industry.",
+                focus_title: "Our focus", focus_desc_1: "We build brand ecosystems where every action strengthens public perception.", focus_desc_2: "A strong brand is one that people recognize, respect, and remember.",
+                btn_explore: "Explore Pillar", pillar_inc: "Pillar Elements", btn_scale_now: "See how to scale",
+                soc_title: "Commercial Partners", soc_subtitle: "Alliances built since 2015.", soc_btn: "View all brands",
+                soc_cat1: "Automotive", soc_cat2: "Fashion & Lifestyle", soc_cat3: "Consumer & Fitness", soc_cat4: "Retail & Digital",
+                lead_tag: "Executive Leadership", lead_title: "The minds behind.", lead_btn: "Origen Media",
+                harold_quote: "\"We don't see engagement, we see people.\"", harold_role: "Founder · CEO / CCO",
+                natalia_quote: "\"Public relations are human relations.\"", natalia_role: "Co-founder · VP PR",
+                tree_title: "Scaling Tree", tree_branches_title: "Branches: Scaling", tree_branches_desc: "Advanced plans ready to dominate the industry.",
+                tree_philosophy: "Vision & Philosophy", phil_tag: "Our Philosophy", phil_title: "The Origin of Greatness",
+                phil_desc1: "Led by the strategic vision of Harold Huerta and the relational mastery of Natalia Guzmán, at Origen Media we don't see clients, we see legacies.",
+                phil_desc2: "We exist for brands that refuse to merely exist. Those born to lead, inspire, and redefine their industry. We understand that greatness isn't improvised: it's built from the root with precision, told with passion, and sustained through true relationships.",
+                tree_ground: "Scaling Threshold", tree_roots_title: "Roots: Foundations", tree_roots_desc: "Base packages to structure or restructure your brand.",
+                way1_title_short: "Structure", way2_title_short: "Rebuild", way_inc: "Includes:", way1_res_label: "Outcome",
+                pack1_sub: "Maintenance", pack2_sub: "Advanced Positioning", pack3_sub: "Aggressive Growth", pack_rec: "Recommended",
+                org_title: "Operative Structure", org_desc_new: "Hybrid firm integrating Ads, Mkt, PR, and Cinematic Production.", org_desc: "We do not operate with minimal structures. Every area has hierarchical levels.", org_hint: "Select a division to view architecture",
+                org_h_role: "Founder · CEO / CCO", org_n_role: "Co-founder · VP PR",
+                org_pr: "Public Relations", org_pub_mkt: "Mkt & Ads", org_prod: "Production", org_mgmt: "Management", org_btn: "View Hierarchy",
+                modal_arch: "Functional Architecture", foot_copy: "All rights reserved.",
+                btn_contact_form: "Direct Contact Form",
+                form_title: "Start Project", form_desc: "Complete this quick questionnaire to send your request directly.",
+                form_lbl_name: "Your Name / Brand", form_lbl_links: "Links (Instagram, Web, etc.)", form_lbl_goal: "What are you looking to achieve?",
+                form_btn_next: "Continue", form_opt_desc: "Select your preferred platform to send the pre-written message:", form_btn_back: "Back",
+                ai_node_title: "AI Audit", ai_node_sub: "Preliminary diagnostic",
+                ai_modal_title: "AI Brand Audit", ai_modal_sub: "Predictive ecosystem analysis",
+                ai_intro: "Enter links (website, social media, etc.). Our AI will search the web and evaluate your current presence generating a tactical diagnostic.",
+                ai_btn_analyze: "Generate Diagnostic", ai_loading: "Searching the web and analyzing ecosystem...",
+                ai_res_title: "Structural Diagnostic", ai_upsell_text: "AI only detects the surface. Harold Huerta (CEO) can design the deep strategy.",
+                ai_btn_ceo: "Request Deep Analysis from CEO", 
+                ai_err_empty: "Please enter at least one link.",
+                ai_err_domain: "Please enter a valid link (e.g. starting with https:// or www).",
+                ai_err_fetch: "Connection error with AI. Please try again."
+            }
+        };
+
+        const teamData = {
+            es: {
+                harold: { name: "Harold Huerta", role: "Fundador · CEO / CCO", slogan: "El cliente invierte en arquitectura empresarial, no en improvisación.", tasks: ["<strong>Dirección Estratégica Global:</strong> Definición del rumbo y objetivos de cada marca.", "<strong>Supervisión Creativa:</strong> Aprobación final de campañas y conceptos.", "<strong>Desarrollo de Alianzas:</strong> Negociación y expansión con partners estratégicos.", "<strong>Control Ejecutivo:</strong> Garantía absoluta del estándar Origen Media en cada entrega."] },
+                natalia: { name: "Natalia Guzmán", role: "Co-fundadora · VP & Dir. PR", slogan: "Las relaciones públicas como relaciones humanas.", tasks: ["<strong>Construcción de Reputación:</strong> Estrategia a largo plazo desde la esencia de la marca.", "<strong>Relaciones con Medios:</strong> Vinculación sólida con líderes de opinión y prensa.", "<strong>Gestión de Crisis:</strong> Protección de la coherencia institucional en todo momento.", "<strong>Posicionamiento:</strong> Traducir la causa de la marca en conversación pública."] },
+                produccion: { name: "División Producción", role: "El Núcleo Operativo", slogan: "El corazón de la agencia. Todo el ecosistema creativo y estratégico converge aquí antes de salir al mundo.", tasks: ["<strong>Postproducción (La Autoridad Central):</strong> La principal fuerza operativa después de los CEOs. Al dominar las tendencias, el ritmo de creadores y marcas, todo converge aquí: Redes Sociales, Pauta (Ads) y el Crew de rodaje le rinden cuentas a Postproducción para asegurar que la pieza final tenga retención e impacto.", "<strong>Dirección y Realización:</strong> Supervisión de la visión del proyecto en set (alineada directamente con los CEOs), asegurando que el material capturado cumpla con el estándar que Postproducción necesita para hacer magia.", "<strong>Cinematografía y Rodaje (Crew):</strong> Camarógrafos, iluminación y arte. Su única función es capturar el material visual en crudo con calidad cinematográfica y entregarlo íntegro al área de postproducción."] },
+                pr: { name: "Relaciones Públicas", role: "Área de Reputación", slogan: "Posicionamiento editorial y presencia estratégica sostenida en el tiempo.", tasks: ["<strong>Earned Media:</strong> Estrategias orgánicas para asegurar alcance mediático y presencia en la conversación.", "<strong>Vocería Estratégica:</strong> Preparación, media training y gestión de los líderes institucionales de la marca.", "<strong>Influencer Relations:</strong> Creación de vínculos orgánicos y genuinos con creadores afines a los valores de la empresa."] },
+                marketing_publicidad: { name: "Marketing & Publicidad", role: "Estrategia y Posicionamiento", slogan: "Precisión en los datos y contundencia en la imagen pública.", tasks: ["<strong>Dirección de Arte y Campañas:</strong> Creación de piezas de alto impacto y copy publicitario estratégico.", "<strong>Brand Strategy:</strong> Segmentación precisa de audiencias y diseño de ecosistemas de marca.", "<strong>Performance & Paid Media:</strong> Optimización de embudos de conversión para un alcance real."] },
+                management: { name: "Management", role: "Desarrollo y Representación", slogan: "Acompañamiento integral, cuidando el talento y escalando su valor.", tasks: ["<strong>Representación Estratégica:</strong> Desarrollo de carrera, protección de imagen y posicionamiento del talento.", "<strong>Negociación Comercial:</strong> Manejo de contratos y cuidado legal de nuestros representados.", "<strong>Alianzas de Marca:</strong> Vinculación curada entre el talento y empresas que comparten sus mismos valores."] }
+            },
+            en: {
+                harold: { name: "Harold Huerta", role: "Founder · CEO / CCO", slogan: "The client invests in business architecture, not improvisation.", tasks: ["<strong>Global Strategic Direction:</strong> Defining the course and objectives for each brand.", "<strong>Creative Supervision:</strong> Final approval of campaigns and concepts.", "<strong>Alliance Development:</strong> Negotiation and expansion with strategic partners.", "<strong>Executive Control:</strong> Absolute guarantee of the Origen Media standard."] },
+                natalia: { name: "Natalia Guzmán", role: "Co-founder · VP & PR Dir.", slogan: "Public relations as human relations.", tasks: ["<strong>Reputation Building:</strong> Long-term strategy built from the brand's essence.", "<strong>Media Relations:</strong> Solid connections with opinion leaders and the press.", "<strong>Crisis Management:</strong> Protecting institutional coherence at all times.", "<strong>Positioning:</strong> Translating the brand's cause into public conversation."] },
+                produccion: { name: "Production Division", role: "The Operative Core", slogan: "The heart of the agency. The entire creative and strategic ecosystem converges here before facing the world.", tasks: ["<strong>Post-production (The Central Authority):</strong> The main operational force right after the CEOs. By mastering trends, retention, creators, and brands, everything converges here: Social Media, Ads/Performance, and the Shooting Crew all report to Post-production to ensure the final piece has true impact.", "<strong>Direction & Realization:</strong> Project vision oversight on set (aligned directly with the CEOs), ensuring the captured material meets the standard that Post-production needs to work its magic.", "<strong>Cinematography & Shooting (Crew):</strong> Camera operators, lighting, and art. Their sole function is to capture raw visual material with cinematic quality and deliver it intact to the post-production area."] },
+                pr: { name: "Public Relations", role: "Reputation Area", slogan: "Editorial positioning and sustained strategic presence over time.", tasks: ["<strong>Earned Media:</strong> Organic strategies to ensure media reach and presence in the conversation.", "<strong>Strategic Spokesmanship:</strong> Preparation, media training, and management of institutional brand leaders.", "<strong>Influencer Relations:</strong> Creation of organic and genuine ties with creators aligned with company values."] },
+                marketing_publicidad: { name: "Marketing & Advertising", role: "Strategy & Positioning", slogan: "Data precision combined with strong public image impact.", tasks: ["<strong>Art Direction & Campaigns:</strong> High-impact creative pieces and strategic copywriting.", "<strong>Brand Strategy:</strong> Accurate audience segmentation and brand ecosystem design.", "<strong>Performance & Paid Media:</strong> Optimization of conversion funnels for real reach."] },
+                management: { name: "Management Division", role: "Development & Representation", slogan: "Integral support, taking care of talent and scaling their value.", tasks: ["<strong>Strategic Representation:</strong> Career development, image protection, and talent positioning.", "<strong>Commercial Negotiation:</strong> Contract management and legal care for our represented talents.", "<strong>Brand Alliances:</strong> Curated linkings between talent and brands that share the same values."] }
+            }
+        };
+
+        const pillarData = {
+            es: {
+                estrategia: {
+                    tag: "Pilar 01", title: "Estrategia Directiva", color: "navy", slogan: "La grandeza no se improvisa, se planifica.",
+                    desc: "La creatividad sin dirección es solo ruido. Todo movimiento nace de un análisis profundo del modelo de negocio y el entorno competitivo.",
+                    tasks: ["<strong>Auditoría de Ecosistema:</strong> Detectamos fugas de atención y oportunidades de conversión.", "<strong>Perfilación Psicológica:</strong> Le hablamos a deseos y miedos humanos.", "<strong>Arquitectura de Marca:</strong> Cimentamos el tono y el posicionamiento inquebrantable."]
+                },
+                contenido: {
+                    tag: "Pilar 02", title: "Contenido Cinematográfico", color: "gold", slogan: "El cine llevado a la palma de la mano.",
+                    desc: "El usuario tiene un déficit de atención crítico. Elevamos la producción digital al estándar cinematográfico, creando piezas heroicas que proyectan autoridad.",
+                    tasks: ["<strong>Hero Formats:</strong> Producciones que actúan como la carta de presentación definitiva.", "<strong>Retención Estructural:</strong> Edición dinámica y diseño sonoro inmersivo.", "<strong>Narrativa Transmedia:</strong> Historias adaptadas a TikTok, Instagram, YouTube y Cines."]
+                },
+                relaciones: {
+                    tag: "Pilar 03", title: "Poder Relacional", color: "purple", slogan: "La diplomacia del prestigio.",
+                    desc: "Construimos el blindaje y el prestigio orgánico insertando a tu marca en la conversación pública de los líderes de opinión.",
+                    tasks: ["<strong>Media Relations:</strong> Inserción en la agenda pública de los medios más prestigiosos.", "<strong>Influencia Creadora:</strong> Alianzas que transfieren autoridad a tu marca.", "<strong>Blindaje de Crisis:</strong> Protocolos rápidos para proteger tu reputación."]
+                }
+            },
+            en: {
+                estrategia: {
+                    tag: "Pillar 01", title: "Strategic Direction", color: "navy", slogan: "Greatness is not improvised, it's planned.",
+                    desc: "Creativity without direction is just noise. Every movement is born from a deep analysis of the business model and competitive environment.",
+                    tasks: ["<strong>Ecosystem Audit:</strong> We detect attention leaks and conversion opportunities.", "<strong>Psychological Profiling:</strong> We speak to human desires and fears.", "<strong>Brand Architecture:</strong> We cement the tone and unwavering positioning."]
+                },
+                contenido: {
+                    tag: "Pillar 02", title: "Cinematic Content", color: "gold", slogan: "Cinema brought to your palm.",
+                    desc: "Users have a critical attention deficit. We elevate digital production to a cinematic standard, creating heroic pieces that project authority.",
+                    tasks: ["<strong>Hero Formats:</strong> Productions that act as your ultimate cover letter.", "<strong>Structural Retention:</strong> Dynamic editing and immersive sound design.", "<strong>Transmedia Narrative:</strong> Stories adapted for TikTok, Instagram, YouTube, and Cinemas."]
+                },
+                relaciones: {
+                    tag: "Pillar 03", title: "Relational Power", color: "purple", slogan: "The diplomacy of prestige.",
+                    desc: "We build organic armor and prestige by inserting your brand into the public conversation of opinion leaders.",
+                    tasks: ["<strong>Media Relations:</strong> Insertion into the public agenda of prestigious media.", "<strong>Creator Influence:</strong> Alliances that transfer authority to your brand.", "<strong>Crisis Shielding:</strong> Rapid protocols to protect your reputation."]
+                }
+            }
+        };
+
+        const planData = {
+            es: {
+                essential: { title: "Essential", subtitle: "Mantenimiento", color: "gray", lite: { name: "Essential Core", features: ["<strong>6</strong> Reels High-End", "<strong>10</strong> Stories Estratégicas", "Calendario Editorial"] }, pro: { name: "Essential Plus", features: ["<strong>12</strong> Reels High-End", "<strong>20</strong> Stories Estratégicas", "Calendario Editorial", "Publicación Programada"] } },
+                strategic: { title: "Strategic", subtitle: "Posicionamiento Avanzado", color: "blue", lite: { name: "Strategic Edge", features: ["<strong>15</strong> Reels (Cinema Look)", "<strong>20</strong> Stories (Retención Diaria)", "Community Management", "Calendario Editorial"] }, pro: { name: "Strategic Elite", features: ["<strong>25</strong> Reels (Cinema Look)", "<strong>40</strong> Stories (Retención Diaria)", "Community Management", "Calendario Editorial", "Publicación Programada"] } },
+                signature: { title: "Signature", subtitle: "Crecimiento Agresivo", color: "gold", lite: { name: "Signature Prestige", features: ["<strong>20</strong> Reels (Cinema Look)", "<strong>30</strong> Stories (Retención)", "<strong>1</strong> Video de YouTube", "Manejo de Crisis PR"] }, pro: { name: "Signature Apex", features: ["<strong>40</strong> Reels (Cinema Look)", "<strong>60</strong> Stories (Retención)", "<strong>2</strong> Videos de YouTube", "Shooting Mensual en Locación", "Manejo de Crisis PR", "Social Listening Activo"] } }
+            },
+            en: {
+                essential: { title: "Essential", subtitle: "Maintenance", color: "gray", lite: { name: "Essential Core", features: ["<strong>6</strong> High-End Reels", "<strong>10</strong> Strategic Stories", "Editorial Calendar"] }, pro: { name: "Essential Plus", features: ["<strong>12</strong> High-End Reels", "<strong>20</strong> Strategic Stories", "Editorial Calendar", "Scheduled Publishing"] } },
+                strategic: { title: "Strategic", subtitle: "Advanced Positioning", color: "blue", lite: { name: "Strategic Edge", features: ["<strong>15</strong> Reels (Cinema Look)", "<strong>20</strong> Stories (Daily Retention)", "Community Management", "Editorial Calendar"] }, pro: { name: "Strategic Elite", features: ["<strong>25</strong> Reels (Cinema Look)", "<strong>40</strong> Stories (Daily Retention)", "Community Management", "Editorial Calendar", "Scheduled Publishing"] } },
+                signature: { title: "Signature", subtitle: "Aggressive Growth", color: "gold", lite: { name: "Signature Prestige", features: ["<strong>20</strong> Reels (Cinema Look)", "<strong>30</strong> Stories (Retention)", "<strong>1</strong> YouTube Video", "PR Crisis Management"] }, pro: { name: "Signature Apex", features: ["<strong>40</strong> Reels (Cinema Look)", "<strong>60</strong> Stories (Retention)", "<strong>2</strong> YouTube Videos", "Monthly Location Shooting", "PR Crisis Management", "Active Social Listening"] } }
+            }
+        };
+
+        const rootData = {
+            es: {
+                estructuramos: { title: "1. Estructuramos tu marca", subtitle: "Para proyectos en fase de cimentación.", color: "gold", desc: "Diseñamos la esencia de la marca desde su origen: concepto, narrativa, identidad y posicionamiento. Construimos los cimientos que permitirán que la marca crezca con claridad y coherencia en todos los canales.", features: ["Estrategia de marca", "Naming y narrativa", "Identidad visual", "Estrategia de contenido", "Arquitectura de marketing", "Lanzamiento de marca", "Relaciones públicas iniciales"], result: "Una marca lista para competir, conectar y crecer." },
+                reconstruimos: { title: "2. Reconstruimos tu marca", subtitle: "Para empresas con historia que necesitan evolucionar.", color: "blue", desc: "Muchas marcas llevan años en el mercado, tienen producto y clientes, pero existen y no dominan la conversación. No se trata de empezar de cero, sino de reordenar la narrativa y recuperar tres elementos clave: Autoridad, Reputación y Prestigio.", features: ["Auditoría de marca", "Reposicionamiento estratégico", "Estrategia de contenido", "Relaciones públicas", "Amplificación en medios", "Presencia digital", "Influencia y liderazgo de opinión"], result: "Una marca con presencia, conversación y relevancia." }
+            },
+            en: {
+                estructuramos: { title: "1. We structure your brand", subtitle: "For projects in the foundation phase.", color: "gold", desc: "We design the essence of the brand from its origin: concept, narrative, identity, and positioning. We build the foundations that will allow the brand to grow with clarity and coherence across all channels.", features: ["Brand Strategy", "Naming and narrative", "Visual Identity", "Content Strategy", "Marketing Architecture", "Brand Launch", "Initial Public Relations"], result: "A brand ready to compete, connect, and grow." },
+                reconstruimos: { title: "2. We rebuild your brand", subtitle: "For companies with history that need to evolve.", color: "blue", desc: "Many brands have been in the market for years, have products and clients, but they exist and don't dominate the conversation. It's not about starting from scratch, but reordering the narrative to recover three key elements: Authority, Reputation, and Prestige.", features: ["Brand Audit", "Strategic Repositioning", "Content Strategy", "Public Relations", "Media Amplification", "Digital Presence", "Influence & Thought Leadership"], result: "A brand with presence, conversation, and relevance." }
+            }
+        };
+
+        let currentLang = 'es';
+        function setLang(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
+            });
+            ['btn-es', 'btn-en', 'btn-es-mob', 'btn-en-mob'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (!btn) return;
+                btn.className = id.includes(lang) ? "lang-btn lang-active px-3 py-1 rounded-full text-[10px] font-bold" : "lang-btn lang-inactive px-3 py-1 rounded-full text-[10px] font-bold text-gray-400";
+            });
+            
+            const extraI18n = {
+                es: { bubble_1: "LEGADO", bubble_2: "PRESTIGIO", bubble_3: "TRASCENDENCIA", bubble_4: "AUTORIDAD", bubble_5: "EMOCIÓN", btn_explore: "Explorar Pilar", pillar_inc: "Elementos del Pilar", btn_scale_now: "Ver cómo escalar" },
+                en: { bubble_1: "LEGACY", bubble_2: "PRESTIGE", bubble_3: "TRANSCENDENCE", bubble_4: "AUTHORITY", bubble_5: "EMOTION", btn_explore: "Explore Pillar", pillar_inc: "Pillar Elements", btn_scale_now: "See how to scale" }
+            };
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (extraI18n[lang] && extraI18n[lang][key]) el.innerHTML = extraI18n[lang][key];
+            });
+        }
+
+        // --- SISTEMA DE BURBUJAS POÉTICAS ---
+        const bubbleWords = {
+            es: ["LEGADO", "PRESTIGIO", "TRASCENDENCIA", "AUTORIDAD", "EMOCIÓN", "INFLUENCIA", "IMPACTO", "CULTURA", "ÉLITE", "PERCEPCIÓN", "VALOR"],
+            en: ["LEGACY", "PRESTIGE", "TRANSCENDENCE", "AUTHORITY", "EMOTION", "INFLUENCE", "IMPACT", "CULTURE", "ELITE", "PERCEPTION", "VALUE"]
+        };
+
+        function initBubbles() {
+            const container = document.getElementById('bubble-container');
+            if(!container) return;
+            
+            for(let i=0; i<5; i++) {
+                spawnBubble(container, true);
+            }
+        }
+
+        function spawnBubble(container, initial = false) {
+            const bubble = document.createElement('div');
+            bubble.className = 'poetic-bubble';
+            
+            const words = bubbleWords[currentLang];
+            bubble.innerText = words[Math.floor(Math.random() * words.length)];
+            
+            const isLeft = Math.random() > 0.5;
+            const xPos = isLeft ? Math.random() * 30 : 60 + Math.random() * 30;
+            const yPos = 10 + Math.random() * 70;
+            
+            bubble.style.left = `${xPos}%`;
+            bubble.style.top = `${yPos}%`;
+            
+            bubble.style.animationDelay = `${Math.random() * 2}s`;
+            
+            if(!initial) {
+                bubble.style.opacity = '0';
+                bubble.style.transform = 'scale(0)';
+                setTimeout(() => {
+                    bubble.style.transition = 'all 0.5s ease-out';
+                    bubble.style.opacity = '1';
+                    bubble.style.transform = 'scale(1)';
+                }, 50);
+            }
+
+            bubble.onclick = () => {
+                bubble.classList.add('bubble-pop');
+                setTimeout(() => {
+                    if(container.contains(bubble)) container.removeChild(bubble);
+                    spawnBubble(container);
+                }, 400); 
+            };
+
+            container.appendChild(bubble);
+            
+            setTimeout(() => {
+                if(container.contains(bubble) && !bubble.classList.contains('bubble-pop')) {
+                    bubble.onclick();
+                }
+            }, 10000 + Math.random() * 10000);
+        }
+
+        // --- SISTEMA DE CORREO DIRECTO (SIN BACKEND) ---
+        function openContactForm(subject = 'General') {
+            document.getElementById('contactSubject').value = subject;
+            document.getElementById('contactFormFields').classList.remove('hidden');
+            document.getElementById('contactOptions').classList.add('hidden');
+            
+            const modal = document.getElementById('contactModal');
+            const content = document.getElementById('contactModalContent');
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-open');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeContactForm() {
+            const modal = document.getElementById('contactModal');
+            const content = document.getElementById('contactModalContent');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { 
+                modal.classList.add('hidden'); 
+                if(document.getElementById('treeOverlay').classList.contains('translate-y-full') && document.getElementById('planModal').classList.contains('hidden') && document.getElementById('rootModal').classList.contains('hidden') && document.getElementById('aiModal').classList.contains('hidden')) {
+                    document.body.classList.remove('modal-open');
+                }
+            }, 300);
+        }
+
+        function prepareEmailOptions() {
+            const name = document.getElementById('contactName').value.trim();
+            const goal = document.getElementById('contactGoal').value.trim();
+            
+            if(!name || !goal) {
+                alert(currentLang === 'es' ? 'Por favor completa al menos tu nombre y qué buscas lograr.' : 'Please complete at least your name and your goal.');
+                return;
+            }
+            
+            document.getElementById('contactFormFields').classList.add('hidden');
+            document.getElementById('contactOptions').classList.remove('hidden');
+        }
+
+        function resetContactForm() {
+            document.getElementById('contactFormFields').classList.remove('hidden');
+            document.getElementById('contactOptions').classList.add('hidden');
+        }
+
+        function sendEmail(clientType) {
+            const subjectInput = document.getElementById('contactSubject').value;
+            const name = document.getElementById('contactName').value.trim();
+            const links = document.getElementById('contactLinks').value.trim();
+            const goal = document.getElementById('contactGoal').value.trim();
+            
+            const recipient = "contacto@origenmedia.com";
+            const subject = encodeURIComponent(`Solicitud de Origen Media: ${subjectInput} - ${name}`);
+            
+            let bodyText = `Hola equipo de Origen Media,\n\nSoy ${name}.\n\n`;
+            if(links) bodyText += `Mis enlaces principales son:\n${links}\n\n`;
+            bodyText += `Lo que busco lograr es:\n${goal}\n\nQuedo a la espera de su contacto.`;
+            const body = encodeURIComponent(bodyText);
+
+            let finalUrl = "";
+            if (clientType === 'gmail') {
+                finalUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${recipient}&su=${subject}&body=${body}`;
+                window.open(finalUrl, '_blank', 'noopener,noreferrer');
+            } else if (clientType === 'outlook') {
+                finalUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=${recipient}&subject=${subject}&body=${body}`;
+                window.open(finalUrl, '_blank', 'noopener,noreferrer');
+            } else {
+                finalUrl = `mailto:${recipient}?subject=${subject}&body=${body}`;
+                window.open(finalUrl, '_top');
+            }
+            
+            closeContactForm();
+        }
+
+        // Modales Básicos
+        function openModal(key) {
+            const data = teamData[currentLang][key];
+            if(!data) return;
+            document.getElementById('modalName').innerText = data.name;
+            document.getElementById('modalRole').innerText = data.role;
+            document.getElementById('modalSlogan').innerHTML = data.slogan;
+            const tasks = document.getElementById('modalTasks');
+            tasks.innerHTML = data.tasks.map(t => `<li class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0"><i class="fa-solid fa-check text-origen-gold mt-1"></i><span class="text-sm">${t}</span></li>`).join('');
+            
+            const modal = document.getElementById('teamModal');
+            const content = document.getElementById('modalContent');
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-open');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal() { 
+            const modal = document.getElementById('teamModal');
+            const content = document.getElementById('modalContent');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                if(document.getElementById('treeOverlay').classList.contains('translate-y-full')) {
+                    document.body.classList.remove('modal-open');
+                }
+            }, 300);
+        }
+
+        function openPillarModal(key) {
+            const data = pillarData[currentLang][key];
+            if(!data) return;
+            
+            const header = document.getElementById('pillarHeader');
+            if(data.color === 'navy') header.className = "p-8 md:p-10 relative overflow-hidden flex-shrink-0 bg-origen-navy";
+            if(data.color === 'gold') header.className = "p-8 md:p-10 relative overflow-hidden flex-shrink-0 bg-origen-gold";
+            if(data.color === 'purple') header.className = "p-8 md:p-10 relative overflow-hidden flex-shrink-0 bg-purple-600";
+            
+            document.getElementById('pillarTag').innerText = data.tag;
+            document.getElementById('pillarTag').className = `text-xs font-bold uppercase tracking-widest mb-2 block ${data.color === 'gold' ? 'text-white/80' : 'text-origen-gold'}`;
+            document.getElementById('pillarTitle').innerText = data.title;
+            document.getElementById('pillarSlogan').innerText = `"${data.slogan}"`;
+            document.getElementById('pillarDesc').innerHTML = data.desc;
+            
+            const tasks = document.getElementById('pillarTasks');
+            tasks.innerHTML = data.tasks.map(t => `<li class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0"><i class="fa-solid fa-check text-origen-gold mt-1"></i><span class="text-sm">${t}</span></li>`).join('');
+            
+            const modal = document.getElementById('pillarModal');
+            const content = document.getElementById('pillarModalContent');
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-open');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closePillarModal() {
+            const modal = document.getElementById('pillarModal');
+            const content = document.getElementById('pillarModalContent');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                if(document.getElementById('treeOverlay').classList.contains('translate-y-full')) {
+                    document.body.classList.remove('modal-open');
+                }
+            }, 300);
+        }
+
+        function openPlanModal(key) {
+            const plan = planData[currentLang][key];
+            if(!plan) return;
+            document.getElementById('planModalTitle').innerText = plan.title;
+            document.getElementById('planModalSubtitle').innerText = plan.subtitle;
+            
+            const variants = document.getElementById('planModalVariants');
+            let iconColor = plan.color === 'gold' ? 'text-origen-gold' : (plan.color === 'blue' ? 'text-blue-500' : 'text-gray-500');
+            let borderColor = plan.color === 'gold' ? 'border-origen-gold' : (plan.color === 'blue' ? 'border-blue-500' : 'border-gray-400');
+            let headerBg = plan.color === 'gold' ? 'bg-origen-navy' : (plan.color === 'blue' ? 'bg-blue-900' : 'bg-gray-800');
+
+            document.getElementById('planModalHeader').className = `${headerBg} p-6 md:p-8 text-center border-b-[4px] ${borderColor}`;
+            
+            variants.innerHTML = `
+                <div class="bg-white p-6 rounded-2xl border border-gray-200 flex flex-col shadow-sm">
+                    <div class="text-center mb-6 pb-4 border-b border-gray-100">
+                        <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Base</span>
+                        <h4 class="font-black text-xl text-origen-navy serif-title">${plan.lite.name}</h4>
+                    </div>
+                    <ul class="space-y-4 font-medium flex-grow">
+                        ${plan.lite.features.map(f => `<li class="flex items-center gap-3 border-b border-gray-50 pb-2"><i class="fa-solid fa-check text-gray-300"></i><span class="text-sm">${f}</span></li>`).join('')}
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border-2 ${borderColor} flex flex-col relative shadow-xl transform md:-translate-y-2">
+                    <div class="text-center mb-6 pb-4 border-b border-gray-100 mt-2">
+                        <span class="text-[10px] ${iconColor} font-bold uppercase tracking-widest block mb-1">Full Scale</span>
+                        <h4 class="font-black text-xl text-origen-navy serif-title">${plan.pro.name}</h4>
+                    </div>
+                    <ul class="space-y-4 font-medium flex-grow">
+                        ${plan.pro.features.map(f => `<li class="flex items-center gap-3 border-b border-gray-50 pb-2"><i class="fa-solid fa-check ${iconColor}"></i><span class="text-sm">${f}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            const modal = document.getElementById('planModal');
+            const content = document.getElementById('planModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+        function closePlanModal() { 
+            const modal = document.getElementById('planModal');
+            const content = document.getElementById('planModalContent');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+
+        function openRootModal(key) {
+            const data = rootData[currentLang][key];
+            if(!data) return;
+            document.getElementById('rootModalTitle').innerText = data.title;
+            document.getElementById('rootModalSubtitle').innerText = data.subtitle;
+            document.getElementById('rootModalDesc').innerText = data.desc;
+            document.getElementById('rootModalResult').innerText = data.result;
+            
+            const header = document.getElementById('rootModalHeader');
+            const icon = document.getElementById('rootModalIcon');
+            const resContainer = document.getElementById('rootModalResultContainer');
+            
+            if(data.color === 'gold') {
+                header.className = "p-8 text-white border-b-[4px] border-origen-gold bg-origen-navy";
+                document.getElementById('rootModalSubtitle').className = "text-[10px] font-bold uppercase tracking-widest mb-1 block text-origen-gold";
+                icon.className = "fa-solid fa-layer-group text-origen-gold text-sm";
+                resContainer.className = "p-4 rounded-xl text-center border border-origen-gold/30 bg-origen-gold/10";
+            } else {
+                header.className = "p-8 text-white border-b-[4px] border-blue-400 bg-blue-900";
+                document.getElementById('rootModalSubtitle').className = "text-[10px] font-bold uppercase tracking-widest mb-1 block text-blue-300";
+                icon.className = "fa-solid fa-screwdriver-wrench text-blue-500 text-sm";
+                resContainer.className = "p-4 rounded-xl text-center border border-blue-500/30 bg-blue-500/10";
+            }
+
+            const features = document.getElementById('rootModalFeatures');
+            features.innerHTML = data.features.map(f => `<li class="flex items-center gap-3 border-b border-gray-100 pb-2"><i class="fa-solid fa-check ${data.color === 'gold' ? 'text-origen-gold' : 'text-blue-500'}"></i><span class="text-sm">${f}</span></li>`).join('');
+            
+            const modal = document.getElementById('rootModal');
+            const content = document.getElementById('rootModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+        function closeRootModal() { 
+            const modal = document.getElementById('rootModal');
+            const content = document.getElementById('rootModalContent');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+
+        function openPhilosophyModal() {
+            const modal = document.getElementById('philosophyModal');
+            const content = document.getElementById('philosophyModalContent');
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-open');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+        function closePhilosophyModal() {
+            const modal = document.getElementById('philosophyModal');
+            const content = document.getElementById('philosophyModalContent');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                if (document.getElementById('treeOverlay').classList.contains('translate-y-full')) {
+                    document.body.classList.remove('modal-open');
+                }
+            }, 300);
+        }
+
+        // Overlay Navigation (Full Screen)
+        function openTreeOverlay() { 
+            const el = document.getElementById('treeOverlay');
+            el.classList.remove('hidden');
+            void el.offsetWidth;
+            el.classList.remove('translate-y-full'); 
+            document.body.classList.add('modal-open'); 
+        }
+        function closeTreeOverlay() { 
+            const el = document.getElementById('treeOverlay');
+            el.classList.add('translate-y-full'); 
+            document.body.classList.remove('modal-open'); 
+            setTimeout(() => el.classList.add('hidden'), 500);
+        }
+        function openTeamOverlay() { 
+            const el = document.getElementById('teamOverlay');
+            el.classList.remove('hidden');
+            void el.offsetWidth;
+            el.classList.remove('translate-y-full'); 
+            document.body.classList.add('modal-open'); 
+        }
+        function closeTeamOverlay() { 
+            const el = document.getElementById('teamOverlay');
+            el.classList.add('translate-y-full'); 
+            document.body.classList.remove('modal-open'); 
+            setTimeout(() => el.classList.add('hidden'), 500);
+        }
+        function openPartnersOverlay() { 
+            const el = document.getElementById('partnersOverlay');
+            el.classList.remove('hidden');
+            void el.offsetWidth;
+            el.classList.remove('translate-y-full'); 
+            document.body.classList.add('modal-open'); 
+        }
+        function closePartnersOverlay() { 
+            const el = document.getElementById('partnersOverlay');
+            el.classList.add('translate-y-full'); 
+            document.body.classList.remove('modal-open'); 
+            setTimeout(() => el.classList.add('hidden'), 500);
+        }
+
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.onclick = () => {
+            if(mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                setTimeout(() => mobileMenu.classList.remove('opacity-0'), 10);
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                document.body.classList.add('modal-open');
+            } else {
+                closeMobileMenu();
+            }
+        };
+        function closeMobileMenu() {
+            mobileMenu.classList.add('opacity-0');
+            setTimeout(() => mobileMenu.classList.add('hidden'), 300);
+            mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+            document.body.classList.remove('modal-open');
+        }
+
+        // --- SISTEMA DE INTELIGENCIA ARTIFICIAL PROFESIONAL ---
+        function openAiModal() {
+            const modal = document.getElementById('aiModal');
+            const content = document.getElementById('aiModalContent');
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-open');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeAiModal() {
+            const modal = document.getElementById('aiModal');
+            const content = document.getElementById('aiModalContent');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.getElementById('aiInputSection').classList.remove('hidden');
+                document.getElementById('aiLoadingSection').classList.add('hidden');
+                document.getElementById('aiOutputSection').classList.add('hidden');
+                document.getElementById('aiErrorMsg').classList.add('hidden');
+                document.getElementById('aiUrl1').value = '';
+                document.getElementById('aiUrl2').value = '';
+                document.getElementById('aiUrl3').value = '';
+                
+                if (document.getElementById('treeOverlay').classList.contains('translate-y-full')) {
+                    document.body.classList.remove('modal-open');
+                }
+            }, 300);
+        }
+
+        async function fetchWithRetry(url, payload, retries = 5) {
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) {
+                        const errData = await response.json().catch(() => ({}));
+                        throw new Error(`HTTP error ${response.status}: ${errData.error?.message || 'Desconocido'}`);
+                    }
+                    return await response.json();
+                } catch (e) {
+                    if (i === retries - 1) throw e;
+                    await new Promise(res => setTimeout(res, delays[i]));
+                }
+            }
+        }
+
+        async function analyzeSocialMedia() {
+            try {
+                const inputs = document.querySelectorAll("input");
+                const instagram = inputs[0]?.value?.trim() || "";
+                const tiktok = inputs[1]?.value?.trim() || "";
+                const web = inputs[2]?.value?.trim() || "";
+
+                // Transiciones visuales de carga para el modal
+                document.getElementById('aiErrorMsg').classList.add('hidden');
+                document.getElementById('aiInputSection').classList.add('hidden');
+                document.getElementById('aiLoadingSection').classList.remove('hidden');
+                document.getElementById('aiLoadingSection').classList.add('flex');
+
+                const res = await fetch("/api/analyze", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        instagram,
+                        tiktok,
+                        web
+                    })
+                });
+
+                const data = await res.json();
+
+                console.log(data);
+
+                // Ocultar carga y mostrar sección final
+                document.getElementById('aiLoadingSection').classList.remove('flex');
+                document.getElementById('aiLoadingSection').classList.add('hidden');
+                document.getElementById('aiOutputSection').classList.remove('hidden');
+
+                updateUI(data);
+            } catch (err) {
+                console.error(err);
+                
+                // En caso de error, regresar a la vista normal para no trabar el modal
+                document.getElementById('aiLoadingSection').classList.remove('flex');
+                document.getElementById('aiLoadingSection').classList.add('hidden');
+                document.getElementById('aiInputSection').classList.remove('hidden');
+                document.getElementById('aiErrorMsg').innerText = "Error conectando al backend.";
+                document.getElementById('aiErrorMsg').classList.remove('hidden');
+            }
+        }
+
+        function updateUI(data) {
+            const scores = document.querySelectorAll(".score");
+            if (scores[0]) scores[0].innerText = (data.web?.score || 0) + "/100";
+            if (scores[1]) scores[1].innerText = (data.tiktok?.score || 0) + "/100";
+            if (scores[2]) scores[2].innerText = (data.instagram?.score || 0) + "/100";
+            
+            // (Opcional) Como aún no tienes elementos con la clase "score" en el HTML del output, 
+            // esto mostrará un pequeño mensaje para que sepas que la data llegó bien.
+            const outputText = document.getElementById('aiOutputText');
+            if (outputText && scores.length === 0) {
+                outputText.innerHTML = `<div class="p-6 bg-white/5 border border-white/10 rounded-2xl text-center">
+                    <h4 class="text-origen-gold font-bold mb-2">¡Datos recibidos en el frontend!</h4>
+                    <p class="text-gray-300 text-sm">Abre la consola (F12) para ver el JSON recibido desde el backend.</p>
+                </div>`;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -925,6 +925,10 @@
                         <input type="text" id="contactName" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-origen-navy transition-colors">
                     </div>
                     <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1" data-i18n="form_lbl_email">Tu Correo Electrónico</label>
+                        <input type="email" id="contactEmail" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-origen-navy transition-colors">
+                    </div>
+                    <div>
                         <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1" data-i18n="form_lbl_links">Enlace Principal (Instagram, Web, etc.)</label>
                         <input type="text" id="contactLinks" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-origen-navy transition-colors">
                     </div>
@@ -1154,8 +1158,8 @@
             });
             
             const extraI18n = {
-                es: { bubble_1: "LEGADO", bubble_2: "PRESTIGIO", bubble_3: "TRASCENDENCIA", bubble_4: "AUTORIDAD", bubble_5: "EMOCIÓN", btn_explore: "Explorar Pilar", pillar_inc: "Elementos del Pilar", btn_scale_now: "Ver cómo escalar" },
-                en: { bubble_1: "LEGACY", bubble_2: "PRESTIGE", bubble_3: "TRANSCENDENCE", bubble_4: "AUTHORITY", bubble_5: "EMOTION", btn_explore: "Explore Pillar", pillar_inc: "Pillar Elements", btn_scale_now: "See how to scale" }
+                es: { bubble_1: "LEGADO", bubble_2: "PRESTIGIO", bubble_3: "TRASCENDENCIA", bubble_4: "AUTORIDAD", bubble_5: "EMOCIÓN", btn_explore: "Explorar Pilar", pillar_inc: "Elementos del Pilar", btn_scale_now: "Ver cómo escalar", form_lbl_email: "Tu Correo Electrónico" },
+                en: { bubble_1: "LEGACY", bubble_2: "PRESTIGE", bubble_3: "TRANSCENDENCE", bubble_4: "AUTHORITY", bubble_5: "EMOTION", btn_explore: "Explore Pillar", pillar_inc: "Pillar Elements", btn_scale_now: "See how to scale", form_lbl_email: "Your Email Address" }
             };
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -1251,11 +1255,18 @@
         async function sendDirectEmail() {
             const subjectInput = document.getElementById('contactSubject').value;
             const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
             const links = document.getElementById('contactLinks').value.trim();
             const goal = document.getElementById('contactGoal').value.trim();
             
-            if(!name || !goal) {
-                alert(currentLang === 'es' ? 'Por favor completa al menos tu nombre y qué buscas lograr.' : 'Please complete at least your name and your goal.');
+            if(!name || !email || !goal) {
+                alert(currentLang === 'es' ? 'Por favor completa tu nombre, correo y qué buscas lograr.' : 'Please complete your name, email and goal.');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(!emailRegex.test(email)) {
+                alert(currentLang === 'es' ? 'Por favor ingresa un correo válido.' : 'Please enter a valid email address.');
                 return;
             }
 
@@ -1275,10 +1286,13 @@
                     },
                     body: JSON.stringify({
                         _subject: `Nueva Solicitud: ${subjectInput} - ${name}`,
+                        email: email, // Esto permite responder directamente al cliente
                         Nombre_o_Marca: name,
+                        Correo_Cliente: email,
                         Enlaces: links || 'No proporcionados',
                         Objetivo: goal,
-                        _template: "box"
+                        _template: "box",
+                        _captcha: "false"
                     })
                 });
 
@@ -1291,6 +1305,7 @@
                         closeContactForm();
                         setTimeout(() => {
                             document.getElementById('contactName').value = '';
+                            document.getElementById('contactEmail').value = '';
                             document.getElementById('contactLinks').value = '';
                             document.getElementById('contactGoal').value = '';
                             btn.innerHTML = originalContent;

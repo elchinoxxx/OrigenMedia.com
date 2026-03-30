@@ -748,7 +748,109 @@
                 </div>
 
                 <div id="aiOutputSection" class="hidden">
-                    <div id="aiOutputText" class="w-full"></div>
+                    <div id="aiOutputText" class="w-full">
+                        <!-- WEB CARD -->
+                        <div class="mb-8 p-6 md:p-8 bg-white/5 border border-white/10 rounded-3xl shadow-lg relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-origen-gold/5 rounded-full blur-2xl pointer-events-none"></div>
+                            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 relative z-10">
+                                <h5 class="text-white font-black uppercase tracking-widest text-base md:text-lg flex items-center">
+                                    <i class="fa-solid fa-globe text-origen-gold mr-3 text-xl"></i> Web / Portal
+                                </h5>
+                                <div class="flex flex-col items-end">
+                                    <span class="text-[8px] md:text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-1">Score Autoridad</span>
+                                    <div class="bg-origen-navy border border-origen-gold/50 text-origen-gold px-3 py-1 md:px-4 md:py-1.5 rounded-full text-sm md:text-lg font-black shadow-[0_0_15px_rgba(197,160,99,0.3)]">
+                                        <span class="score">0/100</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                                <div class="bg-black/30 p-5 rounded-2xl border border-white/5 relative">
+                                    <i class="fa-solid fa-magnifying-glass text-origen-gold/20 absolute top-4 right-4 text-3xl"></i>
+                                    <h6 class="text-origen-gold text-[10px] uppercase tracking-widest font-bold mb-3">Diagnóstico Actual</h6>
+                                    <p class="web-diagnostico text-xs text-gray-300 leading-relaxed"></p>
+                                </div>
+                                <div class="bg-red-500/10 p-5 rounded-2xl border border-red-500/20 relative">
+                                    <i class="fa-solid fa-triangle-exclamation text-red-500/20 absolute top-4 right-4 text-3xl"></i>
+                                    <h6 class="text-red-400 text-[10px] uppercase tracking-widest font-bold mb-3">Áreas Críticas de Mejora</h6>
+                                    <p class="web-problemas text-xs text-gray-200 leading-relaxed"></p>
+                                </div>
+                            </div>
+                            <div class="mt-6 bg-origen-gold/10 p-5 rounded-2xl border border-origen-gold/30 relative z-10">
+                                <h6 class="text-white text-[10px] uppercase tracking-widest font-bold mb-3 flex items-center"><i class="fa-solid fa-chess-knight text-origen-gold mr-2"></i> Plan de Acción (Qué hacer)</h6>
+                                <p class="web-plan text-xs text-gray-300 leading-relaxed"></p>
+                            </div>
+                        </div>
+
+                        <!-- TIKTOK CARD -->
+                        <div class="mb-8 p-6 md:p-8 bg-white/5 border border-white/10 rounded-3xl shadow-lg relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-origen-gold/5 rounded-full blur-2xl pointer-events-none"></div>
+                            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 relative z-10">
+                                <h5 class="text-white font-black uppercase tracking-widest text-base md:text-lg flex items-center">
+                                    <i class="fa-brands fa-tiktok text-origen-gold mr-3 text-xl"></i> TikTok
+                                </h5>
+                                <div class="flex flex-col items-end">
+                                    <span class="text-[8px] md:text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-1">Score Autoridad</span>
+                                    <div class="bg-origen-navy border border-origen-gold/50 text-origen-gold px-3 py-1 md:px-4 md:py-1.5 rounded-full text-sm md:text-lg font-black shadow-[0_0_15px_rgba(197,160,99,0.3)]">
+                                        <span class="score">0/100</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                                <div class="bg-black/30 p-5 rounded-2xl border border-white/5 relative">
+                                    <i class="fa-solid fa-magnifying-glass text-origen-gold/20 absolute top-4 right-4 text-3xl"></i>
+                                    <h6 class="text-origen-gold text-[10px] uppercase tracking-widest font-bold mb-3">Diagnóstico Actual</h6>
+                                    <p class="tiktok-diagnostico text-xs text-gray-300 leading-relaxed"></p>
+                                </div>
+                                <div class="bg-red-500/10 p-5 rounded-2xl border border-red-500/20 relative">
+                                    <i class="fa-solid fa-triangle-exclamation text-red-500/20 absolute top-4 right-4 text-3xl"></i>
+                                    <h6 class="text-red-400 text-[10px] uppercase tracking-widest font-bold mb-3">Áreas Críticas de Mejora</h6>
+                                    <p class="tiktok-problemas text-xs text-gray-200 leading-relaxed"></p>
+                                </div>
+                            </div>
+                            <div class="mt-6 bg-origen-gold/10 p-5 rounded-2xl border border-origen-gold/30 relative z-10">
+                                <h6 class="text-white text-[10px] uppercase tracking-widest font-bold mb-3 flex items-center"><i class="fa-solid fa-chess-knight text-origen-gold mr-2"></i> Plan de Acción (Qué hacer)</h6>
+                                <p class="tiktok-plan text-xs text-gray-300 leading-relaxed"></p>
+                            </div>
+                        </div>
+
+                        <!-- INSTAGRAM CARD -->
+                        <div class="mb-8 p-6 md:p-8 bg-white/5 border border-white/10 rounded-3xl shadow-lg relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-origen-gold/5 rounded-full blur-2xl pointer-events-none"></div>
+                            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 relative z-10">
+                                <h5 class="text-white font-black uppercase tracking-widest text-base md:text-lg flex items-center">
+                                    <i class="fa-brands fa-instagram text-origen-gold mr-3 text-xl"></i> Instagram
+                                </h5>
+                                <div class="flex flex-col items-end">
+                                    <span class="text-[8px] md:text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-1">Score Autoridad</span>
+                                    <div class="bg-origen-navy border border-origen-gold/50 text-origen-gold px-3 py-1 md:px-4 md:py-1.5 rounded-full text-sm md:text-lg font-black shadow-[0_0_15px_rgba(197,160,99,0.3)]">
+                                        <span class="score">0/100</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                                <div class="bg-black/30 p-5 rounded-2xl border border-white/5 relative">
+                                    <i class="fa-solid fa-magnifying-glass text-origen-gold/20 absolute top-4 right-4 text-3xl"></i>
+                                    <h6 class="text-origen-gold text-[10px] uppercase tracking-widest font-bold mb-3">Diagnóstico Actual</h6>
+                                    <p class="instagram-diagnostico text-xs text-gray-300 leading-relaxed"></p>
+                                </div>
+                                <div class="bg-red-500/10 p-5 rounded-2xl border border-red-500/20 relative">
+                                    <i class="fa-solid fa-triangle-exclamation text-red-500/20 absolute top-4 right-4 text-3xl"></i>
+                                    <h6 class="text-red-400 text-[10px] uppercase tracking-widest font-bold mb-3">Áreas Críticas de Mejora</h6>
+                                    <p class="instagram-problemas text-xs text-gray-200 leading-relaxed"></p>
+                                </div>
+                            </div>
+                            <div class="mt-6 bg-origen-gold/10 p-5 rounded-2xl border border-origen-gold/30 relative z-10">
+                                <h6 class="text-white text-[10px] uppercase tracking-widest font-bold mb-3 flex items-center"><i class="fa-solid fa-chess-knight text-origen-gold mr-2"></i> Plan de Acción (Qué hacer)</h6>
+                                <p class="instagram-plan text-xs text-gray-300 leading-relaxed"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 p-6 bg-origen-gold/10 border-2 border-origen-gold/30 rounded-2xl text-center">
+                            <i class="fa-solid fa-bolt text-3xl text-origen-gold mb-3"></i>
+                            <span class="text-white font-bold uppercase tracking-widest text-sm block mb-2">Veredicto Estructural de Origen Media</span>
+                            <p class="text-gray-300 text-sm">Consulta los detalles estructurados del análisis para proceder con el plan de escalamiento.</p>
+                        </div>
+                    </div>
                     
                     <div class="mt-8 text-center border-t border-white/10 pt-6">
                         <p class="text-gray-400 text-xs mb-4" data-i18n="ai_upsell_text">La IA solo detecta la superficie. Harold Huerta (CEO) puede diseñar la estrategia profunda.</p>
@@ -1523,15 +1625,29 @@
             if (scores[1]) scores[1].innerText = (data.tiktok?.score || 0) + "/100";
             if (scores[2]) scores[2].innerText = (data.instagram?.score || 0) + "/100";
             
-            // (Opcional) Como aún no tienes elementos con la clase "score" en el HTML del output, 
-            // esto mostrará un pequeño mensaje para que sepas que la data llegó bien.
-            const outputText = document.getElementById('aiOutputText');
-            if (outputText && scores.length === 0) {
-                outputText.innerHTML = `<div class="p-6 bg-white/5 border border-white/10 rounded-2xl text-center">
-                    <h4 class="text-origen-gold font-bold mb-2">¡Datos recibidos en el frontend!</h4>
-                    <p class="text-gray-300 text-sm">Abre la consola (F12) para ver el JSON recibido desde el backend.</p>
-                </div>`;
-            }
+            // WEB
+            const webDiag = document.querySelector(".web-diagnostico");
+            const webProb = document.querySelector(".web-problemas");
+            const webPlan = document.querySelector(".web-plan");
+            if (webDiag) webDiag.innerText = data.web?.diagnostico || "";
+            if (webProb) webProb.innerText = data.web?.problemas || "";
+            if (webPlan) webPlan.innerText = data.web?.plan || "";
+
+            // TIKTOK
+            const tkDiag = document.querySelector(".tiktok-diagnostico");
+            const tkProb = document.querySelector(".tiktok-problemas");
+            const tkPlan = document.querySelector(".tiktok-plan");
+            if (tkDiag) tkDiag.innerText = data.tiktok?.diagnostico || "";
+            if (tkProb) tkProb.innerText = data.tiktok?.problemas || "";
+            if (tkPlan) tkPlan.innerText = data.tiktok?.plan || "";
+
+            // INSTAGRAM
+            const igDiag = document.querySelector(".instagram-diagnostico");
+            const igProb = document.querySelector(".instagram-problemas");
+            const igPlan = document.querySelector(".instagram-plan");
+            if (igDiag) igDiag.innerText = data.instagram?.diagnostico || "";
+            if (igProb) igProb.innerText = data.instagram?.problemas || "";
+            if (igPlan) igPlan.innerText = data.instagram?.plan || "";
         }
     </script>
 </body>

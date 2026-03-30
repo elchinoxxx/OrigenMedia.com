@@ -8,9 +8,15 @@ try {
 
 let webText = "";
 
+// 🔥 BASE URL CORRECTA (FIX VERCEL)
+const baseUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
+
+// 🔥 SCRAPING REAL
 if (web) {
   try {
-    const scrape = await fetch(`${req.headers.origin}/api/scrape`, {
+    const scrape = await fetch(`${baseUrl}/api/scrape`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -19,14 +25,17 @@ if (web) {
     });
 
     const scrapeData = await scrape.json();
-    webText = scrapeData.text.slice(0, 3000);
-  } catch {}
+    webText = (scrapeData.text || "").slice(0, 3000);
+  } catch (e) {
+    console.error("Scrape error:", e);
+  }
 }
 
+// 🔥 PROMPT MEJORADO (NO GENÉRICO)
 const prompt = `
-Eres un consultor experto en branding premium.
+Actúa como un consultor experto en branding premium y marketing digital.
 
-Analiza esta marca:
+Analiza esta marca de forma crítica y específica:
 
 Instagram: ${instagram}
 TikTok: ${tiktok}
@@ -35,28 +44,30 @@ Web: ${web}
 Contenido del sitio:
 ${webText}
 
-INSTRUCCIONES:
-- NO des respuestas genéricas
-- Sé específico
-- Da análisis distinto por plataforma
+REGLAS:
+- Prohibido dar respuestas genéricas
+- Sé directo, crítico y profesional
+- Detecta errores reales
+- Cada plataforma debe tener análisis distinto
+- Si falta información, dilo claramente
 
-Devuelve JSON así:
+Devuelve SOLO JSON válido:
 
 {
   "instagram": {
-    "score": 0,
-    "diagnostico": "",
-    "problemas": "",
-    "plan": ""
+    "score": número,
+    "diagnostico": "análisis claro",
+    "problemas": "errores concretos",
+    "plan": "acciones específicas"
   },
   "tiktok": {
-    "score": 0,
+    "score": número,
     "diagnostico": "",
     "problemas": "",
     "plan": ""
   },
   "web": {
-    "score": 0,
+    "score": número,
     "diagnostico": "",
     "problemas": "",
     "plan": ""
@@ -64,6 +75,7 @@ Devuelve JSON así:
 }
 `;
 
+// 🔥 LLAMADA A GEMINI
 const response = await fetch(
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY,
   {
@@ -77,15 +89,31 @@ const response = await fetch(
 
 const data = await response.json();
 
+// 🔥 EXTRAER TEXTO
 let text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
 
+// limpiar markdown si viene
 text = text.replace(/```json|```/g, "").trim();
 
-const parsed = JSON.parse(text);
+// 🔥 PARSEO SEGURO
+let parsed;
 
+try {
+  parsed = JSON.parse(text);
+} catch (err) {
+  console.error("JSON inválido:", text);
+  return res.status(500).json({
+    error: "Error parseando IA",
+    raw: text
+  });
+}
+
+// 🔥 RESPUESTA FINAL
 res.status(200).json(parsed);
 
 } catch (e) {
+console.error(e);
 res.status(500).json({ error: "IA error", detail: e.toString() });
 }
+
 }

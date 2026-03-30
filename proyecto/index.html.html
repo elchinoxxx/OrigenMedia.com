@@ -59,7 +59,8 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(0,0,0,0.03);
-            will-change: backdrop-filter;
+            transition: all 0.3s ease;
+            will-change: background, backdrop-filter, box-shadow;
         }
 
         .card-clean {
@@ -168,7 +169,7 @@
 <body class="font-sans antialiased" oncontextmenu="return false;">
 
     <!-- NAV -->
-    <nav class="fixed w-full z-50 nav-glass">
+    <nav class="fixed w-full z-50 nav-glass" id="mainNav">
         <div class="container mx-auto px-6 py-4 flex justify-end lg:justify-center items-center">
             
             <div class="hidden lg:flex items-center gap-8 text-[11px] uppercase tracking-widest font-bold text-gray-500">
@@ -821,10 +822,23 @@
                 }
             });
             initBubbles();
+            
+            // Fix para el bug de la barra de navegación (hacerla sólida al scrollear)
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('mainNav');
+                if (window.scrollY > 20) {
+                    nav.style.background = 'rgba(255, 255, 255, 0.98)';
+                    nav.style.boxShadow = '0 10px 30px -10px rgba(0,0,0,0.1)';
+                    nav.style.backdropFilter = 'blur(30px)';
+                    nav.style.webkitBackdropFilter = 'blur(30px)';
+                } else {
+                    nav.style.background = 'rgba(255, 255, 255, 0.85)';
+                    nav.style.boxShadow = 'none';
+                    nav.style.backdropFilter = 'blur(20px)';
+                    nav.style.webkitBackdropFilter = 'blur(20px)';
+                }
+            });
         });
-
-        // GEMINI API KEY INJECTION
-         // IMPORTANTE: Dejar vacío para que el entorno inyecte automáticamente la llave correcta. Si lo exportas, pon tu clave aquí.
 
         const i18n = {
             es: {
@@ -1435,72 +1449,6 @@
             }, 300);
         }
 
-        function generateMockDetailedAnalysis(urls) {
-            let html = "";
-            urls.forEach(url => {
-                if (!url) return;
-                let isIg = url.toLowerCase().includes('instagram');
-                let isTk = url.toLowerCase().includes('tiktok');
-                let isIn = url.toLowerCase().includes('linkedin');
-                let isFb = url.toLowerCase().includes('facebook');
-                let isYt = url.toLowerCase().includes('youtube');
-                
-                let icon = isIg ? "instagram" : (isTk ? "tiktok" : (isIn ? "linkedin" : (isFb ? "facebook" : (isYt ? "youtube" : "link"))));
-                let platform = isIg ? "Instagram" : (isTk ? "TikTok" : (isIn ? "LinkedIn" : (isFb ? "Facebook" : (isYt ? "YouTube" : "Web/Portal"))));
-                
-                let urlObj;
-                let handle = "Usuario";
-                try {
-                    urlObj = new URL(url);
-                    let parts = urlObj.pathname.split('/').filter(p => p);
-                    if(parts.length > 0) handle = parts[parts.length - 1].replace(/[@?]/g, '');
-                } catch(e) {}
-                
-                let randomScore = Math.floor(Math.random() * (60 - 35 + 1)) + 35;
-
-                html += `
-                <div class="mb-8 p-6 md:p-8 bg-white/5 border border-white/10 rounded-3xl shadow-lg relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-origen-gold/5 rounded-full blur-2xl pointer-events-none"></div>
-                    <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 relative z-10">
-                        <h5 class="text-white font-black uppercase tracking-widest text-base md:text-lg flex items-center">
-                            <i class="fa-brands fa-${icon} text-origen-gold mr-3 text-xl"></i> ${platform} | @${handle}
-                        </h5>
-                        <div class="flex flex-col items-end">
-                            <span class="text-[8px] md:text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-1">Score Autoridad</span>
-                            <div class="bg-origen-navy border border-origen-gold/50 text-origen-gold px-3 py-1 md:px-4 md:py-1.5 rounded-full text-sm md:text-lg font-black shadow-[0_0_15px_rgba(197,160,99,0.3)]">
-                                ${randomScore}/100
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
-                        <div class="bg-black/30 p-5 rounded-2xl border border-white/5 relative">
-                            <i class="fa-solid fa-magnifying-glass text-origen-gold/20 absolute top-4 right-4 text-3xl"></i>
-                            <h6 class="text-origen-gold text-[10px] uppercase tracking-widest font-bold mb-3">Diagnóstico Actual</h6>
-                            <p class="text-xs text-gray-300 leading-relaxed">Falla en comunicar autoridad inmediata. Un visitante nuevo no entiende por qué su marca es la élite de su sector en los primeros 3 segundos vitales. Ausencia de un "Hook" psicológico estructurado.</p>
-                        </div>
-                        <div class="bg-red-500/10 p-5 rounded-2xl border border-red-500/20 relative">
-                            <i class="fa-solid fa-triangle-exclamation text-red-500/20 absolute top-4 right-4 text-3xl"></i>
-                            <h6 class="text-red-400 text-[10px] uppercase tracking-widest font-bold mb-3">Áreas Críticas de Mejora</h6>
-                            <p class="text-xs text-gray-200 leading-relaxed">Se detecta una fuga de atención del 60% antes del segundo 4. El contenido informa, pero no retiene ni genera deseo. Carencia de un estándar cinematográfico que justifica un alto ticket de venta.</p>
-                        </div>
-                    </div>
-                    <div class="mt-6 bg-origen-gold/10 p-5 rounded-2xl border border-origen-gold/30 relative z-10">
-                        <h6 class="text-white text-[10px] uppercase tracking-widest font-bold mb-3 flex items-center"><i class="fa-solid fa-chess-knight text-origen-gold mr-2"></i> Plan de Acción (Qué hacer)</h6>
-                        <p class="text-xs text-gray-300 leading-relaxed">Rediseñar el "Ecosistema de Retención". Sustituir publicaciones estáticas o lineales por formatos "Hero" transmedia. Se requiere inyectar autoridad mediante Relaciones Públicas para blindar la percepción externa. <strong>Ejecución recomendada exclusivamente vía agencia premium.</strong></p>
-                    </div>
-                </div>`;
-            });
-            
-            html += `<div class="mt-8 p-6 bg-origen-gold/10 border-2 border-origen-gold/30 rounded-2xl text-center">
-                <i class="fa-solid fa-bolt text-3xl text-origen-gold mb-3"></i>
-                <span class="text-white font-bold uppercase tracking-widest text-sm block mb-2">Veredicto Estructural de Origen Media</span>
-                <p class="text-gray-300 text-sm">Su marca tiene los cimientos de negocio, pero su envoltura pública no le hace justicia. Se requiere la intervención urgente de la arquitectura integral de Origen Media para elevar su percepción de inmediato.</p>
-            </div>`;
-            
-            return html;
-        }
-
         async function fetchWithRetry(url, payload, retries = 5) {
             const delays = [1000, 2000, 4000, 8000, 16000];
             for (let i = 0; i < retries; i++) {
@@ -1523,131 +1471,66 @@
         }
 
         async function analyzeSocialMedia() {
-            const url1 = document.getElementById('aiUrl1').value.trim();
-            const url2 = document.getElementById('aiUrl2').value.trim();
-            const url3 = document.getElementById('aiUrl3').value.trim();
-            const errorMsg = document.getElementById('aiErrorMsg');
-
-            const isValidUrl = (url) => {
-                if (!url) return true;
-                try {
-                    new URL(url);
-                    return true;
-                } catch (e) {
-                    return false;
-                }
-            };
-
-            if (!url1 && !url2 && !url3) {
-                errorMsg.innerText = i18n[currentLang].ai_err_empty;
-                errorMsg.classList.remove('hidden');
-                return;
-            }
-
-            if ((url1 && !isValidUrl(url1)) || (url2 && !isValidUrl(url2)) || (url3 && !isValidUrl(url3))) {
-                errorMsg.innerText = i18n[currentLang].ai_err_domain;
-                errorMsg.classList.remove('hidden');
-                return;
-            }
-            
-            errorMsg.classList.add('hidden');
-            document.getElementById('aiInputSection').classList.add('hidden');
-            document.getElementById('aiLoadingSection').classList.remove('hidden');
-            document.getElementById('aiLoadingSection').classList.add('flex');
-
-            const systemPrompt = `Actúa como un Auditor de Marca Senior de Origen Media (Agencia Premium).
-            El usuario te proporciona enlaces a sus perfiles/webs. Usa google_search OBLIGATORIAMENTE para revisar esos links reales. Sé analítico, directo y severo. No seas condescendiente.
-
-            Para CADA URL que te den, crea EXACTAMENTE esta estructura HTML (NO uses markdown como \`\`\` o asteriscos):
-
-            <div class="mb-8 p-6 md:p-8 bg-white/5 border border-white/10 rounded-3xl shadow-lg relative overflow-hidden">
-                <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 relative z-10">
-                    <h5 class="text-white font-black uppercase tracking-widest text-base md:text-lg flex items-center">
-                        <i class="fa-solid fa-link text-origen-gold mr-3 text-xl"></i> [Plataforma o Sitio] | @[Usuario encontrado]
-                    </h5>
-                    <div class="flex flex-col items-end">
-                        <span class="text-[8px] md:text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-1">Score Autoridad</span>
-                        <div class="bg-origen-navy border border-origen-gold/50 text-origen-gold px-3 py-1 md:px-4 md:py-1.5 rounded-full text-sm md:text-lg font-black shadow-[0_0_15px_rgba(197,160,99,0.3)]">
-                            [Calificación realista del 1 al 100]/100
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
-                    <div class="bg-black/30 p-5 rounded-2xl border border-white/5 relative">
-                        <i class="fa-solid fa-magnifying-glass text-origen-gold/20 absolute top-4 right-4 text-3xl"></i>
-                        <h6 class="text-origen-gold text-[10px] uppercase tracking-widest font-bold mb-3">Diagnóstico Actual</h6>
-                        <p class="text-xs text-gray-300 leading-relaxed">[Análisis severo de su biografía, posicionamiento y estética visual actual]</p>
-                    </div>
-                    <div class="bg-red-500/10 p-5 rounded-2xl border border-red-500/20 relative">
-                        <i class="fa-solid fa-triangle-exclamation text-red-500/20 absolute top-4 right-4 text-3xl"></i>
-                        <h6 class="text-red-400 text-[10px] uppercase tracking-widest font-bold mb-3">Áreas Críticas de Mejora</h6>
-                        <p class="text-xs text-gray-200 leading-relaxed">[Detalla los errores graves: falta de nivel cinematográfico, mala retención, narrativa pobre]</p>
-                    </div>
-                </div>
-                <div class="mt-6 bg-origen-gold/10 p-5 rounded-2xl border border-origen-gold/30 relative z-10">
-                    <h6 class="text-white text-[10px] uppercase tracking-widest font-bold mb-3 flex items-center"><i class="fa-solid fa-chess-knight text-origen-gold mr-2"></i> Plan de Acción (Qué hacer)</h6>
-                    <p class="text-xs text-gray-300 leading-relaxed">[Dale 2 o 3 pasos tácticos que suenan ejecutables pero que evidencien que necesitan a Origen Media para lograrlo con éxito]</p>
-                </div>
-            </div>
-
-            Al final de todo, agrega UN SOLO div general:
-            <div class="mt-8 p-6 bg-origen-gold/10 border-2 border-origen-gold/30 rounded-2xl text-center">
-                <i class="fa-solid fa-bolt text-3xl text-origen-gold mb-3"></i>
-                <span class="text-white font-bold uppercase tracking-widest text-sm block mb-2">Veredicto Estructural de Origen Media</span>
-                <p class="text-gray-300 text-sm">[Conclusión obligándolos sutilmente a contactar a la agencia]</p>
-            </div>
-
-            Idioma: ${currentLang === 'es' ? 'Español' : 'Inglés'}. Responde ÚNICAMENTE con código HTML sin bloques de markdown.`;
-            
-            const userPrompt = `URLs a auditar: \n1: ${url1}\n2: ${url2}\n3: ${url3}`;
-
             try {
-                // IMPORTANTE: Dejar la key vacía para que el entorno interactivo la proporcione
-                 
-                const apiUrl = `/api/analyze`;
-                
-                let payload = {
-                    contents: [{ parts: [{ text: userPrompt }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
-                    tools: [{ google_search: {} }]
-                };
-                
-                let result;
-                try {
-                    result = await 
-fetch("/api/analyze",{
-method:"POST",
-headers:{ "Content-Type":"application/json"},
-body:JSON.stringify(payload)
-}).then(r=>r.json())
-;
-                    if (result.error) throw new Error(result.error.message);
-                } catch(searchError) {
-                    console.warn("La plataforma no tiene habilitado Google Search. Pasando a análisis experto autónomo...", searchError);
-                    delete payload.tools;
-                    result = await fetchWithRetry(apiUrl, payload, 3);
-                    if (result.error) throw new Error(result.error.message);
-                }
-                
-                const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "";
-                const finalHtml = text.replace(/```html|```/g, ''); 
+                const inputs = document.querySelectorAll("input");
+                const instagram = inputs[0]?.value?.trim() || "";
+                const tiktok = inputs[1]?.value?.trim() || "";
+                const web = inputs[2]?.value?.trim() || "";
 
+                // Transiciones visuales de carga para el modal
+                document.getElementById('aiErrorMsg').classList.add('hidden');
+                document.getElementById('aiInputSection').classList.add('hidden');
+                document.getElementById('aiLoadingSection').classList.remove('hidden');
+                document.getElementById('aiLoadingSection').classList.add('flex');
+
+                const res = await fetch("/api/analyze", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        instagram,
+                        tiktok,
+                        web
+                    })
+                });
+
+                const data = await res.json();
+
+                console.log(data);
+
+                // Ocultar carga y mostrar sección final
                 document.getElementById('aiLoadingSection').classList.remove('flex');
                 document.getElementById('aiLoadingSection').classList.add('hidden');
-                
-                document.getElementById('aiOutputText').innerHTML = finalHtml;
                 document.getElementById('aiOutputSection').classList.remove('hidden');
 
-            } catch (error) {
-                console.warn("Fallback por límite de cuota o error de red: " + error.message);
-                const finalHtml = generateMockDetailedAnalysis([url1, url2, url3]);
+                updateUI(data);
+            } catch (err) {
+                console.error(err);
                 
+                // En caso de error, regresar a la vista normal para no trabar el modal
                 document.getElementById('aiLoadingSection').classList.remove('flex');
                 document.getElementById('aiLoadingSection').classList.add('hidden');
-                
-                document.getElementById('aiOutputText').innerHTML = finalHtml;
-                document.getElementById('aiOutputSection').classList.remove('hidden');
+                document.getElementById('aiInputSection').classList.remove('hidden');
+                document.getElementById('aiErrorMsg').innerText = "Error conectando al backend.";
+                document.getElementById('aiErrorMsg').classList.remove('hidden');
+            }
+        }
+
+        function updateUI(data) {
+            const scores = document.querySelectorAll(".score");
+            if (scores[0]) scores[0].innerText = (data.web?.score || 0) + "/100";
+            if (scores[1]) scores[1].innerText = (data.tiktok?.score || 0) + "/100";
+            if (scores[2]) scores[2].innerText = (data.instagram?.score || 0) + "/100";
+            
+            // (Opcional) Como aún no tienes elementos con la clase "score" en el HTML del output, 
+            // esto mostrará un pequeño mensaje para que sepas que la data llegó bien.
+            const outputText = document.getElementById('aiOutputText');
+            if (outputText && scores.length === 0) {
+                outputText.innerHTML = `<div class="p-6 bg-white/5 border border-white/10 rounded-2xl text-center">
+                    <h4 class="text-origen-gold font-bold mb-2">¡Datos recibidos en el frontend!</h4>
+                    <p class="text-gray-300 text-sm">Abre la consola (F12) para ver el JSON recibido desde el backend.</p>
+                </div>`;
             }
         }
     </script>

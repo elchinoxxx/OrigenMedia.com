@@ -53,6 +53,10 @@
             -moz-osx-font-smoothing: grayscale;
             user-select: none;
         }
+
+        /* Ocultar barra de scroll en navegacion movil pero permitir scroll */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         .nav-glass {
             background: rgba(255, 255, 255, 0.85);
@@ -168,65 +172,49 @@
 </head>
 <body class="font-sans antialiased" oncontextmenu="return false;">
 
-    <!-- NAV -->
+    <!-- NAV OPTIMIZADO (Sin overflow-hidden restrictivo para arreglar el clipping) -->
     <nav class="fixed w-full z-50 nav-glass" id="mainNav">
-        <div class="container mx-auto px-6 py-4 flex justify-end lg:justify-center items-center">
-            
-            <div class="hidden lg:flex items-center gap-8 text-[11px] uppercase tracking-widest font-bold text-gray-500">
+        <!-- Eliminado overflow-hidden para que los menús puedan "salir" del contenedor en PC -->
+        <div class="container mx-auto px-4 lg:px-6 py-4 flex items-center lg:relative z-50">
+            <!-- lg:overflow-visible permite que los dropdowns se vean en PC. En móvil el nav-dropdown usa 'fixed' -->
+            <div class="flex items-center gap-6 lg:gap-8 text-[10px] lg:text-[11px] uppercase tracking-widest font-bold text-gray-500 overflow-x-auto lg:overflow-visible w-full hide-scrollbar whitespace-nowrap scroll-smooth pb-1">
                 
-                <div class="group relative py-4">
-                    <button class="hover:text-origen-navy transition-colors flex items-center gap-1.5 focus:outline-none">
+                <!-- La Agencia -->
+                <div class="group relative py-2 shrink-0 nav-dropdown-group">
+                    <button onclick="toggleNavDropdown('agenciaDropdown')" class="hover:text-origen-navy transition-colors flex items-center gap-1.5 focus:outline-none">
                         <span data-i18n="nav_agency_menu">La Agencia</span> <i class="fa-solid fa-chevron-down text-[8px] mt-0.5 opacity-50 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-300"></i>
                     </button>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-56 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] opacity-0 translate-y-3 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 overflow-hidden">
+                    <!-- "fixed" en móvil evita el recorte del overflow-x-auto. "lg:absolute" lo normaliza en PC -->
+                    <div id="agenciaDropdown" class="nav-dropdown fixed top-[65px] left-4 lg:absolute lg:top-full lg:left-0 mt-0 w-48 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] opacity-0 translate-y-3 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-[100]">
                         <div class="py-3 flex flex-col">
-                            <button onclick="openPhilosophyModal()" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-origen-gold transition-colors flex items-center gap-3 w-full text-left" data-i18n="nav_philosophy">Filosofía</button>
-                            <button onclick="openTeamOverlay()" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-origen-gold transition-colors flex items-center gap-3 w-full text-left" data-i18n="nav_leadership">Liderazgo</button>
+                            <button onclick="openPhilosophyModal(); toggleNavDropdown('agenciaDropdown');" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-origen-gold transition-colors flex items-center gap-3 w-full text-left whitespace-normal" data-i18n="nav_philosophy">Filosofía</button>
+                            <button onclick="openTeamOverlay(); toggleNavDropdown('agenciaDropdown');" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-origen-gold transition-colors flex items-center gap-3 w-full text-left whitespace-normal" data-i18n="nav_leadership">Liderazgo</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="group relative py-4">
-                    <button class="hover:text-origen-navy transition-colors flex items-center gap-1.5 focus:outline-none">
+                <!-- Verticales -->
+                <div class="group relative py-2 shrink-0 nav-dropdown-group">
+                    <button onclick="toggleNavDropdown('verticalesDropdown')" class="hover:text-origen-navy transition-colors flex items-center gap-1.5 focus:outline-none">
                         <span data-i18n="nav_verticals">Verticales</span> <i class="fa-solid fa-chevron-down text-[8px] mt-0.5 opacity-50 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-300"></i>
                     </button>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-60 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] opacity-0 translate-y-3 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 overflow-hidden">
+                    <div id="verticalesDropdown" class="nav-dropdown fixed top-[65px] left-4 lg:absolute lg:top-full lg:-left-4 mt-0 w-60 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] opacity-0 translate-y-3 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-[100]">
                         <div class="py-3 flex flex-col text-[10px]">
-                            <button onclick="openModal('pr')" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-purple-500 transition-colors flex items-center gap-3 w-full text-left"><i class="fa-solid fa-comments text-purple-500 w-4"></i> <span data-i18n="nav_pr">Relaciones Públicas</span></button>
-                            <button onclick="openModal('marketing_publicidad')" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-blue-500 transition-colors flex items-center gap-3 w-full text-left"><i class="fa-solid fa-bullhorn text-blue-500 w-4"></i> <span data-i18n="nav_pub_mkt">Marketing & Publicidad</span></button>
-                            <button onclick="openModal('produccion')" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-origen-gold transition-colors flex items-center gap-3 w-full text-left"><i class="fa-solid fa-clapperboard text-origen-gold w-4"></i> <span data-i18n="nav_prod">Producción</span></button>
-                            <button onclick="openModal('management')" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-green-500 transition-colors flex items-center gap-3 w-full text-left"><i class="fa-solid fa-briefcase text-green-500 w-4"></i> <span data-i18n="nav_mgmt">Management</span></button>
+                            <button onclick="openModal('pr'); toggleNavDropdown('verticalesDropdown');" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-purple-500 transition-colors flex items-center gap-3 w-full text-left whitespace-normal"><i class="fa-solid fa-comments text-purple-500 w-4"></i> <span data-i18n="nav_pr">Relaciones Públicas</span></button>
+                            <button onclick="openModal('marketing_publicidad'); toggleNavDropdown('verticalesDropdown');" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-blue-500 transition-colors flex items-center gap-3 w-full text-left whitespace-normal"><i class="fa-solid fa-bullhorn text-blue-500 w-4"></i> <span data-i18n="nav_pub_mkt">Marketing & Publicidad</span></button>
+                            <button onclick="openModal('produccion'); toggleNavDropdown('verticalesDropdown');" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-origen-gold transition-colors flex items-center gap-3 w-full text-left whitespace-normal"><i class="fa-solid fa-clapperboard text-origen-gold w-4"></i> <span data-i18n="nav_prod">Producción</span></button>
+                            <button onclick="openModal('management'); toggleNavDropdown('verticalesDropdown');" class="px-6 py-2.5 hover:bg-gray-50/80 hover:text-green-500 transition-colors flex items-center gap-3 w-full text-left whitespace-normal"><i class="fa-solid fa-briefcase text-green-500 w-4"></i> <span data-i18n="nav_mgmt">Management</span></button>
                         </div>
                     </div>
                 </div>
 
-                <a href="#socios" class="hover:text-origen-navy transition-colors py-4" data-i18n="nav_partners">Socios</a>
-                <button onclick="openTreeOverlay()" class="hover:text-origen-navy transition-colors py-4 uppercase font-bold" data-i18n="nav_investment">Inversión</button>
-                <button onclick="openTeamOverlay()" class="px-6 py-2.5 rounded-full border border-origen-gold text-origen-gold hover:bg-origen-gold hover:text-white transition-all duration-300 shadow-sm" data-i18n="nav_org">Origen Media</button>
+                <a href="#socios" class="hover:text-origen-navy transition-colors py-2 shrink-0" data-i18n="nav_partners">Socios</a>
+                <button onclick="openTreeOverlay()" class="hover:text-origen-navy transition-colors py-2 uppercase font-bold shrink-0" data-i18n="nav_investment">Inversión</button>
+                <button onclick="openTeamOverlay()" class="px-6 py-2 rounded-full border border-origen-gold text-origen-gold hover:bg-origen-gold hover:text-white transition-all duration-300 shadow-sm shrink-0" data-i18n="nav_org">Origen Media</button>
                 
-                <div class="flex items-center bg-gray-100/80 p-1 rounded-full border border-gray-200 backdrop-blur-md ml-2">
+                <div class="flex items-center bg-gray-100/80 p-1 rounded-full border border-gray-200 backdrop-blur-md ml-auto shrink-0">
                     <button onclick="setLang('es')" id="btn-es" class="lang-btn lang-active px-3 py-1.5 rounded-full text-[10px] font-bold tracking-widest">ES</button>
                     <button onclick="setLang('en')" id="btn-en" class="lang-btn lang-inactive px-3 py-1.5 rounded-full text-[10px] font-bold tracking-widest">EN</button>
-                </div>
-            </div>
-
-            <button id="mobile-menu-btn" class="lg:hidden text-origen-navy text-2xl focus:outline-none relative z-[70]">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-        </div>
-
-        <div id="mobile-menu" class="fixed inset-0 bg-white/98 backdrop-blur-3xl z-[65] hidden flex-col justify-center items-center opacity-0 transition-opacity duration-300">
-            <div class="flex flex-col items-center text-sm uppercase tracking-[0.2em] font-bold text-gray-500 space-y-8">
-                <button onclick="openPhilosophyModal(); closeMobileMenu();" class="hover:text-origen-gold transition-colors uppercase" data-i18n="nav_philosophy">Filosofía</button>
-                <button onclick="openTeamOverlay(); closeMobileMenu();" class="hover:text-origen-gold transition-colors uppercase" data-i18n="nav_leadership">Liderazgo</button>
-                <span class="hover:text-origen-gold transition-colors cursor-pointer opacity-50 pointer-events-none" data-i18n="nav_verticals">Verticales</span>
-                <a href="#socios" class="mobile-link hover:text-origen-gold transition-colors" data-i18n="nav_partners">Socios</a>
-                <button onclick="openTreeOverlay(); closeMobileMenu();" class="hover:text-origen-gold transition-colors uppercase" data-i18n="nav_investment">Inversión</button>
-                <button onclick="openTeamOverlay(); closeMobileMenu();" class="text-origen-gold hover:text-origen-navy transition-colors" data-i18n="nav_org">Origen Media</button>
-                
-                <div class="flex items-center gap-4 pt-6 border-t border-gray-200 w-full justify-center">
-                    <button onclick="setLang('es')" id="btn-es-mob" class="lang-btn lang-active px-6 py-2 rounded-full text-xs">ES</button>
-                    <button onclick="setLang('en')" id="btn-en-mob" class="lang-btn lang-inactive px-6 py-2 rounded-full text-xs">EN</button>
                 </div>
             </div>
         </div>
@@ -285,7 +273,7 @@
                 <p class="text-lg md:text-xl text-gray-500 font-serif italic max-w-2xl mx-auto" data-i18n="how_sub">Una marca se posiciona cuando tres fuerzas trabajan juntas.</p>
             </div>
 
-            <!-- Los 3 Pilares (Interactivos) -->
+            <!-- Los 3 Pilares -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-20">
                 <div onclick="openPillarModal('estrategia')" class="card-clean p-10 border border-gray-200 text-center flex flex-col items-center cursor-pointer group hover:border-origen-navy" data-aos="fade-up" data-aos-delay="0">
                     <div class="w-16 h-16 bg-origen-navy rounded-full flex items-center justify-center text-white text-2xl mb-6 shadow-md group-hover:scale-110 transition-transform duration-300"><i class="fa-solid fa-chess-knight"></i></div>
@@ -643,7 +631,7 @@
         </div>
     </div>
 
-    <!-- MODAL PLANES (DOBLE COLUMNA LITE/PRO) -->
+    <!-- MODAL PLANES -->
     <div id="planModal" class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closePlanModal()"></div>
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative z-10 overflow-hidden flex flex-col max-h-[90vh] transform transition-all scale-95 opacity-0" id="planModalContent">
@@ -758,7 +746,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE ANÁLISIS IA (DISEÑO PREMIUM) -->
+    <!-- MODAL DE ANÁLISIS IA -->
     <div id="aiModal" class="fixed inset-0 z-[140] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeAiModal()"></div>
         <div id="aiModalContent" class="bg-origen-navy rounded-3xl shadow-2xl w-full max-w-4xl relative z-10 overflow-hidden flex flex-col border border-white/10 transform transition-all scale-95 opacity-0 max-h-[95vh]">
@@ -771,12 +759,21 @@
             
             <div class="p-6 md:p-8 bg-origen-navy flex-grow overflow-y-auto">
                 <div id="aiInputSection" class="max-w-2xl mx-auto">
-                    <p class="text-gray-300 text-sm mb-6 text-center" data-i18n="ai_intro">Ingresa los enlaces de tu marca (sitio web, redes sociales, portafolios, etc.). Nuestra IA evaluará tu presencia actual generando un diagnóstico táctico por plataforma.</p>
+                    <p class="text-gray-300 text-sm mb-6 text-center" data-i18n="ai_intro">Ingresa los enlaces de tu marca (sitio web, redes sociales, etc.). Nuestra IA evaluará tu presencia actual generando un diagnóstico táctico solo de las plataformas que proveas.</p>
                     
-                    <div class="space-y-3 mb-6">
-                        <input type="url" id="aiUrl1" placeholder="Enlace 1 (Ej. https://instagram.com/tumarca)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-origen-gold transition-colors">
-                        <input type="url" id="aiUrl2" placeholder="Enlace 2 (Ej. Web o TikTok)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-origen-gold transition-colors">
-                        <input type="url" id="aiUrl3" placeholder="Enlace 3 (Opcional)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-origen-gold transition-colors">
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <label class="block text-[10px] text-origen-gold uppercase font-bold tracking-widest mb-1 ml-1"><i class="fa-solid fa-globe mr-1"></i> Sitio Web</label>
+                            <input type="url" id="aiUrlWeb" placeholder="Ej. https://www.tumarca.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-origen-gold transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-purple-400 uppercase font-bold tracking-widest mb-1 ml-1"><i class="fa-brands fa-instagram mr-1"></i> Instagram</label>
+                            <input type="url" id="aiUrlIg" placeholder="Ej. https://instagram.com/tumarca" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-purple-400 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-blue-400 uppercase font-bold tracking-widest mb-1 ml-1"><i class="fa-brands fa-tiktok mr-1"></i> TikTok</label>
+                            <input type="url" id="aiUrlTk" placeholder="Ej. https://tiktok.com/@tumarca" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                        </div>
                     </div>
                     
                     <p id="aiErrorMsg" class="text-red-400 text-xs hidden mb-4 text-center"></p>
@@ -793,8 +790,9 @@
 
                 <div id="aiOutputSection" class="hidden">
                     <div class="w-full">
+                        
                         <!-- WEB CARD -->
-                        <div class="mb-8 p-6 md:p-8 bg-white/5 border border-white/10 rounded-3xl shadow-lg relative overflow-hidden">
+                        <div id="cardWeb" class="mb-8 p-6 md:p-8 bg-white/5 border border-white/10 rounded-3xl shadow-lg relative overflow-hidden hidden">
                             <div class="absolute top-0 right-0 w-32 h-32 bg-origen-gold/5 rounded-full blur-2xl pointer-events-none"></div>
                             <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 relative z-10">
                                 <h5 class="text-white font-black uppercase tracking-widest text-base md:text-lg flex items-center">
@@ -826,23 +824,23 @@
                         </div>
 
                         <!-- TIKTOK CARD -->
-                        <div class="mb-8 p-6 md:p-8 bg-white/5 border border-white/10 rounded-3xl shadow-lg relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-origen-gold/5 rounded-full blur-2xl pointer-events-none"></div>
+                        <div id="cardTikTok" class="mb-8 p-6 md:p-8 bg-white/5 border border-white/10 rounded-3xl shadow-lg relative overflow-hidden hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl pointer-events-none"></div>
                             <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 relative z-10">
                                 <h5 class="text-white font-black uppercase tracking-widest text-base md:text-lg flex items-center">
-                                    <i class="fa-brands fa-tiktok text-origen-gold mr-3 text-xl"></i> TikTok
+                                    <i class="fa-brands fa-tiktok text-blue-400 mr-3 text-xl"></i> TikTok
                                 </h5>
                                 <div class="flex flex-col items-end">
                                     <span class="text-[8px] md:text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-1">Score Autoridad</span>
-                                    <div class="bg-origen-navy border border-origen-gold/50 text-origen-gold px-3 py-1 md:px-4 md:py-1.5 rounded-full text-sm md:text-lg font-black shadow-[0_0_15px_rgba(197,160,99,0.3)]">
+                                    <div class="bg-origen-navy border border-blue-500/50 text-blue-400 px-3 py-1 md:px-4 md:py-1.5 rounded-full text-sm md:text-lg font-black shadow-[0_0_15px_rgba(59,130,246,0.3)]">
                                         <span id="tiktokScore">0/100</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
                                 <div class="bg-black/30 p-5 rounded-2xl border border-white/5 relative">
-                                    <i class="fa-solid fa-magnifying-glass text-origen-gold/20 absolute top-4 right-4 text-3xl"></i>
-                                    <h6 class="text-origen-gold text-[10px] uppercase tracking-widest font-bold mb-3">Diagnóstico Actual</h6>
+                                    <i class="fa-solid fa-magnifying-glass text-blue-400/20 absolute top-4 right-4 text-3xl"></i>
+                                    <h6 class="text-blue-400 text-[10px] uppercase tracking-widest font-bold mb-3">Diagnóstico Actual</h6>
                                     <p id="tiktokDiagnostico" class="text-xs text-gray-300 leading-relaxed"></p>
                                 </div>
                                 <div class="bg-red-500/10 p-5 rounded-2xl border border-red-500/20 relative">
@@ -851,30 +849,30 @@
                                     <p id="tiktokProblemas" class="text-xs text-gray-200 leading-relaxed"></p>
                                 </div>
                             </div>
-                            <div class="mt-6 bg-origen-gold/10 p-5 rounded-2xl border border-origen-gold/30 relative z-10">
-                                <h6 class="text-white text-[10px] uppercase tracking-widest font-bold mb-3 flex items-center"><i class="fa-solid fa-chess-knight text-origen-gold mr-2"></i> Plan de Acción (Qué hacer)</h6>
+                            <div class="mt-6 bg-blue-500/10 p-5 rounded-2xl border border-blue-500/30 relative z-10">
+                                <h6 class="text-white text-[10px] uppercase tracking-widest font-bold mb-3 flex items-center"><i class="fa-solid fa-chess-knight text-blue-400 mr-2"></i> Plan de Acción (Qué hacer)</h6>
                                 <p id="tiktokPlan" class="text-xs text-gray-300 leading-relaxed"></p>
                             </div>
                         </div>
 
                         <!-- INSTAGRAM CARD -->
-                        <div class="mb-8 p-6 md:p-8 bg-white/5 border border-white/10 rounded-3xl shadow-lg relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-origen-gold/5 rounded-full blur-2xl pointer-events-none"></div>
+                        <div id="cardInstagram" class="mb-8 p-6 md:p-8 bg-white/5 border border-white/10 rounded-3xl shadow-lg relative overflow-hidden hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-2xl pointer-events-none"></div>
                             <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 relative z-10">
                                 <h5 class="text-white font-black uppercase tracking-widest text-base md:text-lg flex items-center">
-                                    <i class="fa-brands fa-instagram text-origen-gold mr-3 text-xl"></i> Instagram
+                                    <i class="fa-brands fa-instagram text-purple-400 mr-3 text-xl"></i> Instagram
                                 </h5>
                                 <div class="flex flex-col items-end">
                                     <span class="text-[8px] md:text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-1">Score Autoridad</span>
-                                    <div class="bg-origen-navy border border-origen-gold/50 text-origen-gold px-3 py-1 md:px-4 md:py-1.5 rounded-full text-sm md:text-lg font-black shadow-[0_0_15px_rgba(197,160,99,0.3)]">
+                                    <div class="bg-origen-navy border border-purple-500/50 text-purple-400 px-3 py-1 md:px-4 md:py-1.5 rounded-full text-sm md:text-lg font-black shadow-[0_0_15px_rgba(168,85,247,0.3)]">
                                         <span id="instagramScore">0/100</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
                                 <div class="bg-black/30 p-5 rounded-2xl border border-white/5 relative">
-                                    <i class="fa-solid fa-magnifying-glass text-origen-gold/20 absolute top-4 right-4 text-3xl"></i>
-                                    <h6 class="text-origen-gold text-[10px] uppercase tracking-widest font-bold mb-3">Diagnóstico Actual</h6>
+                                    <i class="fa-solid fa-magnifying-glass text-purple-400/20 absolute top-4 right-4 text-3xl"></i>
+                                    <h6 class="text-purple-400 text-[10px] uppercase tracking-widest font-bold mb-3">Diagnóstico Actual</h6>
                                     <p id="instagramDiagnostico" class="text-xs text-gray-300 leading-relaxed"></p>
                                 </div>
                                 <div class="bg-red-500/10 p-5 rounded-2xl border border-red-500/20 relative">
@@ -883,8 +881,8 @@
                                     <p id="instagramProblemas" class="text-xs text-gray-200 leading-relaxed"></p>
                                 </div>
                             </div>
-                            <div class="mt-6 bg-origen-gold/10 p-5 rounded-2xl border border-origen-gold/30 relative z-10">
-                                <h6 class="text-white text-[10px] uppercase tracking-widest font-bold mb-3 flex items-center"><i class="fa-solid fa-chess-knight text-origen-gold mr-2"></i> Plan de Acción (Qué hacer)</h6>
+                            <div class="mt-6 bg-purple-500/10 p-5 rounded-2xl border border-purple-500/30 relative z-10">
+                                <h6 class="text-white text-[10px] uppercase tracking-widest font-bold mb-3 flex items-center"><i class="fa-solid fa-chess-knight text-purple-400 mr-2"></i> Plan de Acción (Qué hacer)</h6>
                                 <p id="instagramPlan" class="text-xs text-gray-300 leading-relaxed"></p>
                             </div>
                         </div>
@@ -907,7 +905,7 @@
         </div>
     </div>
 
-    <!-- NUEVO MODAL: SISTEMA DE CONTACTO INFALIBLE (SIN BACKEND) -->
+    <!-- NUEVO MODAL: SISTEMA DE CONTACTO INFALIBLE -->
     <div id="contactModal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeContactForm()"></div>
         <div id="contactModalContent" class="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden flex flex-col transform transition-all scale-95 opacity-0">
@@ -959,7 +957,6 @@
             });
             initBubbles();
             
-            // Fix para el bug de la barra de navegación (hacerla sólida al scrollear)
             window.addEventListener('scroll', () => {
                 const nav = document.getElementById('mainNav');
                 if (window.scrollY > 20) {
@@ -976,10 +973,35 @@
             });
         });
 
+        // Manejador JavaScript infalible para los menús desplegables en móvil
+        function toggleNavDropdown(id) {
+            const el = document.getElementById(id);
+            const isActive = el.classList.contains('!opacity-100');
+            
+            // Cierra cualquier otro dropdown abierto
+            document.querySelectorAll('.nav-dropdown').forEach(d => {
+                d.classList.remove('!opacity-100', '!translate-y-0', '!pointer-events-auto');
+            });
+            
+            // Abre o cierra el actual según corresponda
+            if (!isActive) {
+                el.classList.add('!opacity-100', '!translate-y-0', '!pointer-events-auto');
+            }
+        }
+
+        // Cierra los dropdowns si haces tap fuera de ellos
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-dropdown-group')) {
+                document.querySelectorAll('.nav-dropdown').forEach(d => {
+                    d.classList.remove('!opacity-100', '!translate-y-0', '!pointer-events-auto');
+                });
+            }
+        });
+
         const i18n = {
             es: {
                 nav_agency_menu: "La Agencia", nav_philosophy: "Filosofía", nav_leadership: "Liderazgo", nav_org: "Origen Media",
-                nav_verticals: "Verticals", nav_pr: "Relaciones Públicas", nav_pub_mkt: "Marketing & Publicidad", nav_prod: "Producción", nav_mgmt: "Management",
+                nav_verticals: "Verticales", nav_pr: "Relaciones Públicas", nav_pub_mkt: "Marketing & Publicidad", nav_prod: "Producción", nav_mgmt: "Management",
                 nav_partners: "Socios", nav_investment: "Inversión",
                 hero_subtitle: "Built from the origin.", badge_pr: "Relaciones Públicas", badge_mkt_pub: "Marketing & Publicidad", badge_mgmt: "Management",
                 hero_cta1: "Agendar reunión", hero_cta2: "Origen Media", hero_cta_sub: "Apartado 2: Reconstruimos tu marca",
@@ -1011,7 +1033,7 @@
                 form_btn_next: "Enviar Solicitud",
                 ai_node_title: "Auditoría IA", ai_node_sub: "Diagnóstico preliminar",
                 ai_modal_title: "Auditoría de Marca IA", ai_modal_sub: "Análisis predictivo de ecosistema digital",
-                ai_intro: "Ingresa enlaces (sitio web, redes sociales, etc.). Nuestra IA evaluará tu presencia actual generando un diagnóstico táctico por plataforma.",
+                ai_intro: "Ingresa los enlaces de tu marca. Nuestra IA evaluará tu presencia actual generando un diagnóstico táctico solo de las plataformas que proveas.",
                 ai_btn_analyze: "Generar Diagnóstico", ai_loading: "Evaluando arquitectura digital y ecosistema...",
                 ai_res_title: "Diagnóstico Estructural", ai_upsell_text: "La IA solo detecta la superficie. Harold Huerta (CEO) puede diseñar la estrategia profunda.",
                 ai_btn_ceo: "Solicitar Análisis Profundo a CEO", 
@@ -1053,7 +1075,7 @@
                 form_btn_next: "Send Request",
                 ai_node_title: "AI Audit", ai_node_sub: "Preliminary diagnostic",
                 ai_modal_title: "AI Brand Audit", ai_modal_sub: "Predictive ecosystem analysis",
-                ai_intro: "Enter links (website, social media, etc.). Our AI will evaluate your current presence generating a tactical diagnostic.",
+                ai_intro: "Enter links (website, social media, etc.). Our AI will evaluate your current presence generating a tactical diagnostic only for the given platforms.",
                 ai_btn_analyze: "Generate Diagnostic", ai_loading: "Evaluating digital architecture and ecosystem...",
                 ai_res_title: "Structural Diagnostic", ai_upsell_text: "AI only detects the surface. Harold Huerta (CEO) can design the deep strategy.",
                 ai_btn_ceo: "Request Deep Analysis from CEO", 
@@ -1084,38 +1106,14 @@
 
         const pillarData = {
             es: {
-                estrategia: {
-                    tag: "Pilar 01", title: "Estrategia Directiva", color: "navy", slogan: "La grandeza no se improvisa, se planifica.",
-                    desc: "La creatividad sin dirección es solo ruido. Todo movimiento nace de un análisis profundo del modelo de negocio y el entorno competitivo.",
-                    tasks: ["<strong>Auditoría de Ecosistema:</strong> Detectamos fugas de atención y oportunidades de conversión.", "<strong>Perfilación Psicológica:</strong> Le hablamos a deseos y miedos humanos.", "<strong>Arquitectura de Marca:</strong> Cimentamos el tono y el posicionamiento inquebrantable."]
-                },
-                contenido: {
-                    tag: "Pilar 02", title: "Contenido Cinematográfico", color: "gold", slogan: "El cine llevado a la palma de la mano.",
-                    desc: "El usuario tiene un déficit de atención crítico. Elevamos la producción digital al estándar cinematográfico, creando piezas heroicas que proyectan autoridad.",
-                    tasks: ["<strong>Hero Formats:</strong> Producciones que actúan como la carta de presentación definitiva.", "<strong>Retención Estructural:</strong> Edición dinámica y diseño sonoro inmersivo.", "<strong>Narrativa Transmedia:</strong> Historias adaptadas a TikTok, Instagram, YouTube y Cines."]
-                },
-                relaciones: {
-                    tag: "Pilar 03", title: "Poder Relacional", color: "purple", slogan: "La diplomacia del prestigio.",
-                    desc: "Construimos el blindaje y el prestigio orgánico insertando a tu marca en la conversación pública de los líderes de opinión.",
-                    tasks: ["<strong>Media Relations:</strong> Inserción en la agenda pública de los medios más prestigiosos.", "<strong>Influencia Creadora:</strong> Alianzas que transfieren autoridad a tu marca.", "<strong>Blindaje de Crisis:</strong> Protocolos rápidos para proteger tu reputación."]
-                }
+                estrategia: { tag: "Pilar 01", title: "Estrategia Directiva", color: "navy", slogan: "La grandeza no se improvisa, se planifica.", desc: "La creatividad sin dirección es solo ruido. Todo movimiento nace de un análisis profundo del modelo de negocio y el entorno competitivo.", tasks: ["<strong>Auditoría de Ecosistema:</strong> Detectamos fugas de atención y oportunidades de conversión.", "<strong>Perfilación Psicológica:</strong> Le hablamos a deseos y miedos humanos.", "<strong>Arquitectura de Marca:</strong> Cimentamos el tono y el posicionamiento inquebrantable."] },
+                contenido: { tag: "Pilar 02", title: "Contenido Cinematográfico", color: "gold", slogan: "El cine llevado a la palma de la mano.", desc: "El usuario tiene un déficit de atención crítico. Elevamos la producción digital al estándar cinematográfico, creando piezas heroicas que proyectan autoridad.", tasks: ["<strong>Hero Formats:</strong> Producciones que actúan como la carta de presentación definitiva.", "<strong>Retención Estructural:</strong> Edición dinámica y diseño sonoro inmersivo.", "<strong>Narrativa Transmedia:</strong> Historias adaptadas a TikTok, Instagram, YouTube y Cines."] },
+                relaciones: { tag: "Pilar 03", title: "Poder Relacional", color: "purple", slogan: "La diplomacia del prestigio.", desc: "Construimos el blindaje y el prestigio orgánico insertando a tu marca en la conversación pública de los líderes de opinión.", tasks: ["<strong>Media Relations:</strong> Inserción en la agenda pública de los medios más prestigiosos.", "<strong>Influencia Creadora:</strong> Alianzas que transfieren autoridad a tu marca.", "<strong>Blindaje de Crisis:</strong> Protocolos rápidos para proteger tu reputación."] }
             },
             en: {
-                estrategia: {
-                    tag: "Pillar 01", title: "Strategic Direction", color: "navy", slogan: "Greatness is not improvised, it's planned.",
-                    desc: "Creativity without direction is just noise. Every movement is born from a deep analysis of the business model and competitive environment.",
-                    tasks: ["<strong>Ecosystem Audit:</strong> We detect attention leaks and conversion opportunities.", "<strong>Psychological Profiling:</strong> We speak to human desires and fears.", "<strong>Brand Architecture:</strong> We cement the tone and unwavering positioning."]
-                },
-                contenido: {
-                    tag: "Pillar 02", title: "Cinematic Content", color: "gold", slogan: "Cinema brought to your palm.",
-                    desc: "Users have a critical attention deficit. We elevate digital production to a cinematic standard, creating heroic pieces that project authority.",
-                    tasks: ["<strong>Hero Formats:</strong> Productions that act as your ultimate cover letter.", "<strong>Structural Retention:</strong> Dynamic editing and immersive sound design.", "<strong>Transmedia Narrative:</strong> Stories adapted for TikTok, Instagram, YouTube, and Cinemas."]
-                },
-                relaciones: {
-                    tag: "Pillar 03", title: "Relational Power", color: "purple", slogan: "The diplomacy of prestige.",
-                    desc: "We build organic armor and prestige by inserting your brand into the public conversation of opinion leaders.",
-                    tasks: ["<strong>Media Relations:</strong> Insertion into the public agenda of prestigious media.", "<strong>Creator Influence:</strong> Alliances that transfer authority to your brand.", "<strong>Crisis Shielding:</strong> Rapid protocols to protect your reputation."]
-                }
+                estrategia: { tag: "Pillar 01", title: "Strategic Direction", color: "navy", slogan: "Greatness is not improvised, it's planned.", desc: "Creativity without direction is just noise. Every movement is born from a deep analysis of the business model and competitive environment.", tasks: ["<strong>Ecosystem Audit:</strong> We detect attention leaks and conversion opportunities.", "<strong>Psychological Profiling:</strong> We speak to human desires and fears.", "<strong>Brand Architecture:</strong> We cement the tone and unwavering positioning."] },
+                contenido: { tag: "Pillar 02", title: "Cinematic Content", color: "gold", slogan: "Cinema brought to your palm.", desc: "Users have a critical attention deficit. We elevate digital production to a cinematic standard, creating heroic pieces that project authority.", tasks: ["<strong>Hero Formats:</strong> Productions that act as your ultimate cover letter.", "<strong>Structural Retention:</strong> Dynamic editing and immersive sound design.", "<strong>Transmedia Narrative:</strong> Stories adapted for TikTok, Instagram, YouTube, and Cinemas."] },
+                relaciones: { tag: "Pillar 03", title: "Relational Power", color: "purple", slogan: "The diplomacy of prestige.", desc: "We build organic armor and prestige by inserting your brand into the public conversation of opinion leaders.", tasks: ["<strong>Media Relations:</strong> Insertion into the public agenda of prestigious media.", "<strong>Creator Influence:</strong> Alliances that transfer authority to your brand.", "<strong>Crisis Shielding:</strong> Rapid protocols to protect your reputation."] }
             }
         };
 
@@ -1151,10 +1149,10 @@
                 const key = el.getAttribute('data-i18n');
                 if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
             });
-            ['btn-es', 'btn-en', 'btn-es-mob', 'btn-en-mob'].forEach(id => {
+            ['btn-es', 'btn-en'].forEach(id => {
                 const btn = document.getElementById(id);
                 if (!btn) return;
-                btn.className = id.includes(lang) ? "lang-btn lang-active px-3 py-1 rounded-full text-[10px] font-bold" : "lang-btn lang-inactive px-3 py-1 rounded-full text-[10px] font-bold text-gray-400";
+                btn.className = id.includes(lang) ? "lang-btn lang-active px-3 py-1.5 rounded-full text-[10px] font-bold tracking-widest" : "lang-btn lang-inactive px-3 py-1.5 rounded-full text-[10px] font-bold tracking-widest";
             });
             
             const extraI18n = {
@@ -1167,7 +1165,7 @@
             });
         }
 
-        // --- SISTEMA DE BURBUJAS POÉTICAS ---
+        // Burbujas
         const bubbleWords = {
             es: ["LEGADO", "PRESTIGIO", "TRASCENDENCIA", "AUTORIDAD", "EMOCIÓN", "INFLUENCIA", "IMPACTO", "CULTURA", "ÉLITE", "PERCEPCIÓN", "VALOR"],
             en: ["LEGACY", "PRESTIGE", "TRANSCENDENCE", "AUTHORITY", "EMOTION", "INFLUENCE", "IMPACT", "CULTURE", "ELITE", "PERCEPTION", "VALUE"]
@@ -1176,26 +1174,19 @@
         function initBubbles() {
             const container = document.getElementById('bubble-container');
             if(!container) return;
-            
-            for(let i=0; i<5; i++) {
-                spawnBubble(container, true);
-            }
+            for(let i=0; i<5; i++) spawnBubble(container, true);
         }
 
         function spawnBubble(container, initial = false) {
             const bubble = document.createElement('div');
             bubble.className = 'poetic-bubble';
-            
             const words = bubbleWords[currentLang];
             bubble.innerText = words[Math.floor(Math.random() * words.length)];
-            
             const isLeft = Math.random() > 0.5;
             const xPos = isLeft ? Math.random() * 30 : 60 + Math.random() * 30;
             const yPos = 10 + Math.random() * 70;
-            
             bubble.style.left = `${xPos}%`;
             bubble.style.top = `${yPos}%`;
-            
             bubble.style.animationDelay = `${Math.random() * 2}s`;
             
             if(!initial) {
@@ -1217,7 +1208,6 @@
             };
 
             container.appendChild(bubble);
-            
             setTimeout(() => {
                 if(container.contains(bubble) && !bubble.classList.contains('bubble-pop')) {
                     bubble.onclick();
@@ -1225,10 +1215,9 @@
             }, 10000 + Math.random() * 10000);
         }
 
-        // --- SISTEMA DE CORREO DIRECTO (FETCH A FORMSUBMIT) ---
+        // Contact Form
         function openContactForm(subject = 'General') {
             document.getElementById('contactSubject').value = subject;
-            
             const modal = document.getElementById('contactModal');
             const content = document.getElementById('contactModalContent');
             modal.classList.remove('hidden');
@@ -1277,22 +1266,14 @@
             btn.classList.add('opacity-75');
 
             try {
-                // Endpoint para enviar correos directamente sin redirigir usando FormSubmit
                 const response = await fetch("https://formsubmit.co/ajax/andresdavid@origenmedia.com.mx", {
                     method: "POST",
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify({
                         _subject: `Nueva Solicitud: ${subjectInput} - ${name}`,
-                        email: email, // Esto permite responder directamente al cliente
-                        Nombre_o_Marca: name,
-                        Correo_Cliente: email,
-                        Enlaces: links || 'No proporcionados',
-                        Objetivo: goal,
-                        _template: "box",
-                        _captcha: "false"
+                        email: email,
+                        Nombre_o_Marca: name, Correo_Cliente: email, Enlaces: links || 'No proporcionados', Objetivo: goal,
+                        _template: "box", _captcha: "false"
                     })
                 });
 
@@ -1304,27 +1285,18 @@
                     setTimeout(() => {
                         closeContactForm();
                         setTimeout(() => {
-                            document.getElementById('contactName').value = '';
-                            document.getElementById('contactEmail').value = '';
-                            document.getElementById('contactLinks').value = '';
-                            document.getElementById('contactGoal').value = '';
-                            btn.innerHTML = originalContent;
-                            btn.disabled = false;
-                            btn.classList.remove('opacity-75');
-                            btn.classList.replace('bg-green-600', 'bg-origen-navy');
-                            btn.classList.replace('hover:bg-green-700', 'hover:bg-origen-gold');
+                            document.getElementById('contactName').value = ''; document.getElementById('contactEmail').value = '';
+                            document.getElementById('contactLinks').value = ''; document.getElementById('contactGoal').value = '';
+                            btn.innerHTML = originalContent; btn.disabled = false; btn.classList.remove('opacity-75');
+                            btn.classList.replace('bg-green-600', 'bg-origen-navy'); btn.classList.replace('hover:bg-green-700', 'hover:bg-origen-gold');
                         }, 500);
                     }, 2000);
-                } else {
-                    throw new Error("Fallo al enviar");
-                }
+                } else throw new Error("Fallo al enviar");
             } catch (error) {
                 btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-2"></i> Error de conexión';
                 btn.classList.replace('bg-origen-navy', 'bg-red-600');
                 setTimeout(() => {
-                    btn.innerHTML = originalContent;
-                    btn.disabled = false;
-                    btn.classList.remove('opacity-75');
+                    btn.innerHTML = originalContent; btn.disabled = false; btn.classList.remove('opacity-75');
                     btn.classList.replace('bg-red-600', 'bg-origen-navy');
                 }, 3000);
             }
@@ -1398,9 +1370,7 @@
             content.classList.add('scale-95', 'opacity-0');
             setTimeout(() => {
                 modal.classList.add('hidden');
-                if(document.getElementById('treeOverlay').classList.contains('translate-y-full')) {
-                    document.body.classList.remove('modal-open');
-                }
+                if(document.getElementById('treeOverlay').classList.contains('translate-y-full')) document.body.classList.remove('modal-open');
             }, 300);
         }
 
@@ -1416,7 +1386,6 @@
             let headerBg = plan.color === 'gold' ? 'bg-origen-navy' : (plan.color === 'blue' ? 'bg-blue-900' : 'bg-gray-800');
 
             document.getElementById('planModalHeader').className = `${headerBg} p-6 md:p-8 text-center border-b-[4px] ${borderColor}`;
-            
             variants.innerHTML = `
                 <div class="bg-white p-6 rounded-2xl border border-gray-200 flex flex-col shadow-sm">
                     <div class="text-center mb-6 pb-4 border-b border-gray-100">
@@ -1514,71 +1483,34 @@
             content.classList.add('scale-95', 'opacity-0');
             setTimeout(() => {
                 modal.classList.add('hidden');
-                if (document.getElementById('treeOverlay').classList.contains('translate-y-full')) {
-                    document.body.classList.remove('modal-open');
-                }
+                if (document.getElementById('treeOverlay').classList.contains('translate-y-full')) document.body.classList.remove('modal-open');
             }, 300);
         }
 
-        // Overlay Navigation (Full Screen)
+        // Overlay Navigation
         function openTreeOverlay() { 
-            const el = document.getElementById('treeOverlay');
-            el.classList.remove('hidden');
-            void el.offsetWidth;
-            el.classList.remove('translate-y-full'); 
-            document.body.classList.add('modal-open'); 
+            const el = document.getElementById('treeOverlay'); el.classList.remove('hidden'); void el.offsetWidth;
+            el.classList.remove('translate-y-full'); document.body.classList.add('modal-open'); 
         }
         function closeTreeOverlay() { 
-            const el = document.getElementById('treeOverlay');
-            el.classList.add('translate-y-full'); 
-            document.body.classList.remove('modal-open'); 
+            const el = document.getElementById('treeOverlay'); el.classList.add('translate-y-full'); document.body.classList.remove('modal-open'); 
             setTimeout(() => el.classList.add('hidden'), 500);
         }
         function openTeamOverlay() { 
-            const el = document.getElementById('teamOverlay');
-            el.classList.remove('hidden');
-            void el.offsetWidth;
-            el.classList.remove('translate-y-full'); 
-            document.body.classList.add('modal-open'); 
+            const el = document.getElementById('teamOverlay'); el.classList.remove('hidden'); void el.offsetWidth;
+            el.classList.remove('translate-y-full'); document.body.classList.add('modal-open'); 
         }
         function closeTeamOverlay() { 
-            const el = document.getElementById('teamOverlay');
-            el.classList.add('translate-y-full'); 
-            document.body.classList.remove('modal-open'); 
+            const el = document.getElementById('teamOverlay'); el.classList.add('translate-y-full'); document.body.classList.remove('modal-open'); 
             setTimeout(() => el.classList.add('hidden'), 500);
         }
         function openPartnersOverlay() { 
-            const el = document.getElementById('partnersOverlay');
-            el.classList.remove('hidden');
-            void el.offsetWidth;
-            el.classList.remove('translate-y-full'); 
-            document.body.classList.add('modal-open'); 
+            const el = document.getElementById('partnersOverlay'); el.classList.remove('hidden'); void el.offsetWidth;
+            el.classList.remove('translate-y-full'); document.body.classList.add('modal-open'); 
         }
         function closePartnersOverlay() { 
-            const el = document.getElementById('partnersOverlay');
-            el.classList.add('translate-y-full'); 
-            document.body.classList.remove('modal-open'); 
+            const el = document.getElementById('partnersOverlay'); el.classList.add('translate-y-full'); document.body.classList.remove('modal-open'); 
             setTimeout(() => el.classList.add('hidden'), 500);
-        }
-
-        // Mobile Menu
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuBtn.onclick = () => {
-            if(mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.remove('hidden');
-                setTimeout(() => mobileMenu.classList.remove('opacity-0'), 10);
-                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-                document.body.classList.add('modal-open');
-            } else {
-                closeMobileMenu();
-            }
-        };
-        function closeMobileMenu() {
-            mobileMenu.classList.add('opacity-0');
-            setTimeout(() => mobileMenu.classList.add('hidden'), 300);
-            mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-            document.body.classList.remove('modal-open');
         }
 
         // --- SISTEMA DE INTELIGENCIA ARTIFICIAL PROFESIONAL ---
@@ -1604,9 +1536,9 @@
                 document.getElementById('aiLoadingSection').classList.add('hidden');
                 document.getElementById('aiOutputSection').classList.add('hidden');
                 document.getElementById('aiErrorMsg').classList.add('hidden');
-                document.getElementById('aiUrl1').value = '';
-                document.getElementById('aiUrl2').value = '';
-                document.getElementById('aiUrl3').value = '';
+                document.getElementById('aiUrlWeb').value = '';
+                document.getElementById('aiUrlIg').value = '';
+                document.getElementById('aiUrlTk').value = '';
                 
                 if (document.getElementById('treeOverlay').classList.contains('translate-y-full')) {
                     document.body.classList.remove('modal-open');
@@ -1614,7 +1546,6 @@
             }, 300);
         }
 
-        // Utilidad para aleatorizar
         function getRandomEl(arr) {
             return arr[Math.floor(Math.random() * arr.length)];
         }
@@ -1625,13 +1556,11 @@
             "El perfil exhibe una arquitectura estética inconsistente. La falta de un estándar visual premium diluye la autoridad de la marca y dificulta la percepción de valor alto por parte del usuario.",
             "Ausencia de diferenciación clara en la matriz de contenido. La marca no proyecta liderazgo en su sector debido a una estrategia visual genérica que no capitaliza la psicología del consumidor."
         ];
-        
         const igProbOptions = [
             "1) Fuga de retención por identidad visual fragmentada. 2) Carencia de un ecosistema estético que justifique un ticket alto. 3) Interacciones transaccionales en lugar de construcción de comunidad.",
             "1) Perfil percibido como catálogo en lugar de referente de industria. 2) Ruido visual que afecta la jerarquía de la marca. 3) Falta de formatos que validen el prestigio institucional.",
             "1) Inconsistencia en paletas cromáticas y tono de voz. 2) Estructura de perfil que no genera impacto inmediato. 3) Dilución del mensaje central entre publicaciones sin objetivo claro."
         ];
-        
         const igPlanOptions = [
             "Implementar una reestructuración de la línea gráfica corporativa, estableciendo manuales de identidad estrictos. Generar contenido basado en pilares de reputación.",
             "Rediseñar el grid bajo principios de psicología del color y arquitectura de la información. Transicionar de contenido meramente informativo a formatos de validación de estatus.",
@@ -1643,13 +1572,11 @@
             "La narrativa presenta un déficit comunicacional importante. No se transmite la propuesta de valor de forma ágil, provocando que el algoritmo y la audiencia descarten el contenido rápidamente.",
             "Falta de contundencia en la comunicación directa. La estrategia no capitaliza las métricas de retención, resultando en un esfuerzo que no se traduce en posicionamiento real."
         ];
-
         const tkProbOptions = [
             "1) Hooks débiles o inexistentes. 2) Estructura narrativa plana que no genera curiosidad. 3) Falta de llamados a la acción claros y alineados al objetivo de negocio.",
             "1) Dispersión del mensaje clave en los primeros segundos. 2) Tono de comunicación que no conecta con el dinamismo de la plataforma. 3) Ausencia de formatos seriados para fidelización.",
             "1) Carencia de estructura de storytelling dinámico. 2) Retención de usuario inferior al estándar de la industria. 3) Lenguaje de marca poco adaptable al ritmo actual."
         ];
-
         const tkPlanOptions = [
             "Diseñar una matriz de comunicación basada en retención. Estructurar ganchos psicológicos en la narrativa e implementar un marco de publicación enfocado en autoridad y valor rápido.",
             "Reconstruir el arco narrativo de las comunicaciones. Entrenar la vocería de la marca para transmitir la propuesta de valor con impacto contundente en formatos de consumo veloz.",
@@ -1661,13 +1588,11 @@
             "Ausencia de un embudo de conversión claro y directo. La interfaz no guía intuitivamente al cliente potencial hacia la toma de decisión, reduciendo significativamente la eficacia de adquisición.",
             "La propuesta de valor no destaca en la primera vista (Above the fold). El diseño estructural carece de los incentivos necesarios para generar confianza y retener al prospecto calificado."
         ];
-
         const webProbOptions = [
             "1) Fricción excesiva en el flujo de usuario. 2) Textos que no comunican urgencia ni exclusividad. 3) Elementos visuales que compiten por atención y rompen el embudo.",
             "1) Carencia de puntos de conversión estratégicos. 2) Arquitectura web que no prioriza el retorno de inversión. 3) Mensaje principal diluido bajo elementos secundarios.",
             "1) Interfaz desalineada con el estándar premium esperado por el usuario. 2) Navegación poco intuitiva. 3) Ausencia de validadores sociales y elementos de prueba de autoridad."
         ];
-
         const webPlanOptions = [
             "Ejecutar una reestructuración de la experiencia de usuario (UX). Implementar una jerarquía visual que destaque la promesa principal e insertar embudos de captación optimizados.",
             "Simplificar la arquitectura de la información y rediseñar los puntos de contacto. Elevar el copywriting hacia un tono directivo que impulse la toma de decisiones sin fricción.",
@@ -1682,7 +1607,6 @@
         ];
 
         async function analyzeSocialMedia() {
-            // 1. Verificar Límite de Uso Diario (3 veces por día)
             const today = new Date().toDateString();
             let usageDate = localStorage.getItem('origen_ai_usage_date');
             let usageCount = parseInt(localStorage.getItem('origen_ai_usage_count') || '0');
@@ -1699,36 +1623,34 @@
                 return;
             }
 
-            const inputs = document.querySelectorAll("input");
-            const url1 = inputs[0]?.value?.trim() || "";
-            const url2 = inputs[1]?.value?.trim() || "";
-            const url3 = inputs[2]?.value?.trim() || "";
+            const urlWeb = document.getElementById("aiUrlWeb").value.trim();
+            const urlIg = document.getElementById("aiUrlIg").value.trim();
+            const urlTk = document.getElementById("aiUrlTk").value.trim();
 
             const isValidUrl = (url) => {
                 if (!url) return true;
                 try {
-                    new URL(url);
+                    new URL(url.startsWith('http') ? url : `https://${url}`);
                     return true;
                 } catch (e) {
                     return false;
                 }
             };
 
-            if (!url1 && !url2 && !url3) {
+            if (!urlWeb && !urlIg && !urlTk) {
                 const errorMsg = document.getElementById('aiErrorMsg');
                 errorMsg.innerText = "Por favor, ingresa al menos un enlace.";
                 errorMsg.classList.remove('hidden');
                 return;
             }
 
-            if ((url1 && !isValidUrl(url1)) || (url2 && !isValidUrl(url2)) || (url3 && !isValidUrl(url3))) {
+            if ((urlWeb && !isValidUrl(urlWeb)) || (urlIg && !isValidUrl(urlIg)) || (urlTk && !isValidUrl(urlTk))) {
                 const errorMsg = document.getElementById('aiErrorMsg');
-                errorMsg.innerText = "Por favor, ingresa un enlace válido (ej. que inicie con https:// o www).";
+                errorMsg.innerText = "Por favor, ingresa un enlace válido (ej. www.tumarca.com).";
                 errorMsg.classList.remove('hidden');
                 return;
             }
 
-            // Incrementar uso solo si pasó las validaciones
             localStorage.setItem('origen_ai_usage_count', usageCount + 1);
 
             document.getElementById('aiErrorMsg').classList.add('hidden');
@@ -1736,57 +1658,50 @@
             document.getElementById('aiLoadingSection').classList.remove('hidden');
             document.getElementById('aiLoadingSection').classList.add('flex');
 
-            // 2. Simular proceso de carga y generación
             setTimeout(() => {
-                // 3. Generar Datos Únicos
                 const ctaFinal = getRandomEl(ctasOptions);
                 
-                const data = {
-                    instagram: {
-                        score: Math.floor(Math.random() * (85 - 40 + 1)) + 40,
-                        diagnostico: getRandomEl(igDiagOptions),
-                        problemas: getRandomEl(igProbOptions),
-                        plan: getRandomEl(igPlanOptions) + " " + ctaFinal
-                    },
-                    tiktok: {
-                        score: Math.floor(Math.random() * (80 - 30 + 1)) + 30,
-                        diagnostico: getRandomEl(tkDiagOptions),
-                        problemas: getRandomEl(tkProbOptions),
-                        plan: getRandomEl(tkPlanOptions) + " " + ctaFinal
-                    },
-                    web: {
-                        score: Math.floor(Math.random() * (90 - 50 + 1)) + 50,
-                        diagnostico: getRandomEl(webDiagOptions),
-                        problemas: getRandomEl(webProbOptions),
-                        plan: getRandomEl(webPlanOptions) + " " + ctaFinal
-                    }
-                };
+                // Procesar WEB (Se asegura ocultar si no hay enlace)
+                const cardWeb = document.getElementById("cardWeb");
+                if(urlWeb) {
+                    document.getElementById("webScore").textContent = (Math.floor(Math.random() * (90 - 50 + 1)) + 50) + "/100";
+                    document.getElementById("webDiagnostico").textContent = getRandomEl(webDiagOptions);
+                    document.getElementById("webProblemas").textContent = getRandomEl(webProbOptions);
+                    document.getElementById("webPlan").textContent = getRandomEl(webPlanOptions) + " " + ctaFinal;
+                    cardWeb.classList.remove("hidden");
+                } else {
+                    cardWeb.classList.add("hidden");
+                }
 
-                // 4. Actualizar DOM sin innerHTML
-                // WEB
-                document.getElementById("webScore").textContent = data.web.score + "/100";
-                document.getElementById("webDiagnostico").textContent = data.web.diagnostico;
-                document.getElementById("webProblemas").textContent = data.web.problemas;
-                document.getElementById("webPlan").textContent = data.web.plan;
+                // Procesar IG (Se asegura ocultar si no hay enlace)
+                const cardIg = document.getElementById("cardInstagram");
+                if(urlIg) {
+                    document.getElementById("instagramScore").textContent = (Math.floor(Math.random() * (85 - 40 + 1)) + 40) + "/100";
+                    document.getElementById("instagramDiagnostico").textContent = getRandomEl(igDiagOptions);
+                    document.getElementById("instagramProblemas").textContent = getRandomEl(igProbOptions);
+                    document.getElementById("instagramPlan").textContent = getRandomEl(igPlanOptions) + " " + ctaFinal;
+                    cardIg.classList.remove("hidden");
+                } else {
+                    cardIg.classList.add("hidden");
+                }
 
-                // TIKTOK
-                document.getElementById("tiktokScore").textContent = data.tiktok.score + "/100";
-                document.getElementById("tiktokDiagnostico").textContent = data.tiktok.diagnostico;
-                document.getElementById("tiktokProblemas").textContent = data.tiktok.problemas;
-                document.getElementById("tiktokPlan").textContent = data.tiktok.plan;
+                // Procesar TikTok (Se asegura ocultar si no hay enlace)
+                const cardTk = document.getElementById("cardTikTok");
+                if(urlTk) {
+                    document.getElementById("tiktokScore").textContent = (Math.floor(Math.random() * (80 - 30 + 1)) + 30) + "/100";
+                    document.getElementById("tiktokDiagnostico").textContent = getRandomEl(tkDiagOptions);
+                    document.getElementById("tiktokProblemas").textContent = getRandomEl(tkProbOptions);
+                    document.getElementById("tiktokPlan").textContent = getRandomEl(tkPlanOptions) + " " + ctaFinal;
+                    cardTk.classList.remove("hidden");
+                } else {
+                    cardTk.classList.add("hidden");
+                }
 
-                // INSTAGRAM
-                document.getElementById("instagramScore").textContent = data.instagram.score + "/100";
-                document.getElementById("instagramDiagnostico").textContent = data.instagram.diagnostico;
-                document.getElementById("instagramProblemas").textContent = data.instagram.problemas;
-                document.getElementById("instagramPlan").textContent = data.instagram.plan;
-
-                // Transición de UI
                 document.getElementById('aiLoadingSection').classList.remove('flex');
                 document.getElementById('aiLoadingSection').classList.add('hidden');
                 document.getElementById('aiOutputSection').classList.remove('hidden');
 
-            }, 2500); // 2.5 segundos de simulación para parecer premium
+            }, 2500); 
         }
     </script>
 </body>

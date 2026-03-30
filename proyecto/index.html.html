@@ -771,7 +771,7 @@
             
             <div class="p-6 md:p-8 bg-origen-navy flex-grow overflow-y-auto">
                 <div id="aiInputSection" class="max-w-2xl mx-auto">
-                    <p class="text-gray-300 text-sm mb-6 text-center" data-i18n="ai_intro">Ingresa los enlaces de tu marca (sitio web, redes sociales, portafolios, etc.). Nuestra IA rastreará la web y evaluará tu presencia actual generando un diagnóstico táctico por plataforma.</p>
+                    <p class="text-gray-300 text-sm mb-6 text-center" data-i18n="ai_intro">Ingresa los enlaces de tu marca (sitio web, redes sociales, portafolios, etc.). Nuestra IA evaluará tu presencia actual generando un diagnóstico táctico por plataforma.</p>
                     
                     <div class="space-y-3 mb-6">
                         <input type="url" id="aiUrl1" placeholder="Enlace 1 (Ej. https://instagram.com/tumarca)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-origen-gold transition-colors">
@@ -933,23 +933,9 @@
                         <textarea id="contactGoal" rows="3" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-origen-navy transition-colors"></textarea>
                     </div>
                     
-                    <button onclick="prepareEmailOptions()" class="w-full py-4 bg-origen-navy text-white font-bold rounded-xl hover:bg-origen-gold transition-colors mt-2" data-i18n="form_btn_next">Continuar</button>
-                </div>
-
-                <div id="contactOptions" class="hidden space-y-3">
-                    <p class="text-sm text-gray-600 mb-4 text-center font-medium" data-i18n="form_opt_desc">Selecciona tu plataforma preferida para enviar el mensaje ya redactado:</p>
-                    
-                    <button onclick="sendEmail('gmail')" class="w-full py-3 bg-white border border-red-200 text-red-600 font-bold rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-envelope text-lg"></i> Enviar con Gmail
+                    <button id="submitContactBtn" onclick="sendDirectEmail()" class="w-full py-4 bg-origen-navy text-white font-bold rounded-xl hover:bg-origen-gold transition-colors mt-4">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> <span data-i18n="form_btn_next">Enviar Solicitud</span>
                     </button>
-                    <button onclick="sendEmail('outlook')" class="w-full py-3 bg-white border border-blue-200 text-blue-600 font-bold rounded-xl hover:bg-blue-50 transition-colors flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-envelope-open text-lg"></i> Enviar con Outlook
-                    </button>
-                    <button onclick="sendEmail('default')" class="w-full py-3 bg-origen-navy text-white font-bold rounded-xl hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-mobile-screen text-lg"></i> App por defecto (Mail, Apple, etc.)
-                    </button>
-                    
-                    <button onclick="resetContactForm()" class="w-full py-2 text-xs text-gray-400 font-bold uppercase tracking-widest mt-4 hover:text-gray-600" data-i18n="form_btn_back">Volver</button>
                 </div>
             </div>
         </div>
@@ -1018,7 +1004,7 @@
                 btn_contact_form: "Formulario de Contacto Directo",
                 form_title: "Iniciar Proyecto", form_desc: "Completa este cuestionario rápido para enviarnos tu solicitud directamente.",
                 form_lbl_name: "Tu Nombre / Marca", form_lbl_links: "Enlaces (Instagram, Web, etc.)", form_lbl_goal: "¿Qué buscas lograr?",
-                form_btn_next: "Continuar", form_opt_desc: "Selecciona tu plataforma preferida para enviar el mensaje ya redactado:", form_btn_back: "Volver",
+                form_btn_next: "Enviar Solicitud",
                 ai_node_title: "Auditoría IA", ai_node_sub: "Diagnóstico preliminar",
                 ai_modal_title: "Auditoría de Marca IA", ai_modal_sub: "Análisis predictivo de ecosistema digital",
                 ai_intro: "Ingresa enlaces (sitio web, redes sociales, etc.). Nuestra IA evaluará tu presencia actual generando un diagnóstico táctico por plataforma.",
@@ -1060,7 +1046,7 @@
                 btn_contact_form: "Direct Contact Form",
                 form_title: "Start Project", form_desc: "Complete this quick questionnaire to send your request directly.",
                 form_lbl_name: "Your Name / Brand", form_lbl_links: "Links (Instagram, Web, etc.)", form_lbl_goal: "What are you looking to achieve?",
-                form_btn_next: "Continue", form_opt_desc: "Select your preferred platform to send the pre-written message:", form_btn_back: "Back",
+                form_btn_next: "Send Request",
                 ai_node_title: "AI Audit", ai_node_sub: "Preliminary diagnostic",
                 ai_modal_title: "AI Brand Audit", ai_modal_sub: "Predictive ecosystem analysis",
                 ai_intro: "Enter links (website, social media, etc.). Our AI will evaluate your current presence generating a tactical diagnostic.",
@@ -1235,11 +1221,9 @@
             }, 10000 + Math.random() * 10000);
         }
 
-        // --- SISTEMA DE CORREO DIRECTO (SIN BACKEND) ---
+        // --- SISTEMA DE CORREO DIRECTO (FETCH A FORMSUBMIT) ---
         function openContactForm(subject = 'General') {
             document.getElementById('contactSubject').value = subject;
-            document.getElementById('contactFormFields').classList.remove('hidden');
-            document.getElementById('contactOptions').classList.add('hidden');
             
             const modal = document.getElementById('contactModal');
             const content = document.getElementById('contactModalContent');
@@ -1264,51 +1248,71 @@
             }, 300);
         }
 
-        function prepareEmailOptions() {
+        async function sendDirectEmail() {
+            const subjectInput = document.getElementById('contactSubject').value;
             const name = document.getElementById('contactName').value.trim();
+            const links = document.getElementById('contactLinks').value.trim();
             const goal = document.getElementById('contactGoal').value.trim();
             
             if(!name || !goal) {
                 alert(currentLang === 'es' ? 'Por favor completa al menos tu nombre y qué buscas lograr.' : 'Please complete at least your name and your goal.');
                 return;
             }
-            
-            document.getElementById('contactFormFields').classList.add('hidden');
-            document.getElementById('contactOptions').classList.remove('hidden');
-        }
 
-        function resetContactForm() {
-            document.getElementById('contactFormFields').classList.remove('hidden');
-            document.getElementById('contactOptions').classList.add('hidden');
-        }
+            const btn = document.getElementById('submitContactBtn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Enviando...';
+            btn.disabled = true;
+            btn.classList.add('opacity-75');
 
-        function sendEmail(clientType) {
-            const subjectInput = document.getElementById('contactSubject').value;
-            const name = document.getElementById('contactName').value.trim();
-            const links = document.getElementById('contactLinks').value.trim();
-            const goal = document.getElementById('contactGoal').value.trim();
-            
-            const recipient = "contacto@origenmedia.com";
-            const subject = encodeURIComponent(`Solicitud de Origen Media: ${subjectInput} - ${name}`);
-            
-            let bodyText = `Hola equipo de Origen Media,\n\nSoy ${name}.\n\n`;
-            if(links) bodyText += `Mis enlaces principales son:\n${links}\n\n`;
-            bodyText += `Lo que busco lograr es:\n${goal}\n\nQuedo a la espera de su contacto.`;
-            const body = encodeURIComponent(bodyText);
+            try {
+                // Endpoint para enviar correos directamente sin redirigir usando FormSubmit
+                const response = await fetch("https://formsubmit.co/ajax/andresdavid@origenmedia.com.mx", {
+                    method: "POST",
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        _subject: `Nueva Solicitud: ${subjectInput} - ${name}`,
+                        Nombre_o_Marca: name,
+                        Enlaces: links || 'No proporcionados',
+                        Objetivo: goal,
+                        _template: "box"
+                    })
+                });
 
-            let finalUrl = "";
-            if (clientType === 'gmail') {
-                finalUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${recipient}&su=${subject}&body=${body}`;
-                window.open(finalUrl, '_blank', 'noopener,noreferrer');
-            } else if (clientType === 'outlook') {
-                finalUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=${recipient}&subject=${subject}&body=${body}`;
-                window.open(finalUrl, '_blank', 'noopener,noreferrer');
-            } else {
-                finalUrl = `mailto:${recipient}?subject=${subject}&body=${body}`;
-                window.open(finalUrl, '_top');
+                if (response.ok) {
+                    btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> ¡Enviado exitosamente!';
+                    btn.classList.replace('bg-origen-navy', 'bg-green-600');
+                    btn.classList.replace('hover:bg-origen-gold', 'hover:bg-green-700');
+                    
+                    setTimeout(() => {
+                        closeContactForm();
+                        setTimeout(() => {
+                            document.getElementById('contactName').value = '';
+                            document.getElementById('contactLinks').value = '';
+                            document.getElementById('contactGoal').value = '';
+                            btn.innerHTML = originalContent;
+                            btn.disabled = false;
+                            btn.classList.remove('opacity-75');
+                            btn.classList.replace('bg-green-600', 'bg-origen-navy');
+                            btn.classList.replace('hover:bg-green-700', 'hover:bg-origen-gold');
+                        }, 500);
+                    }, 2000);
+                } else {
+                    throw new Error("Fallo al enviar");
+                }
+            } catch (error) {
+                btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-2"></i> Error de conexión';
+                btn.classList.replace('bg-origen-navy', 'bg-red-600');
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-75');
+                    btn.classList.replace('bg-red-600', 'bg-origen-navy');
+                }, 3000);
             }
-            
-            closeContactForm();
         }
 
         // Modales Básicos
